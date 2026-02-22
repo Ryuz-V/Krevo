@@ -7,8 +7,8 @@ export default function Navbar() {
             <div className="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
                 {/* Logo */}
                 <Link href="/" className="flex items-center space-x-2">
-                    <span className="text-2xl font-black tracking-tighter">ONYX TEE</span>
-                    <span className="text-[10px] font-medium tracking-widest text-gray-500 uppercase mt-1">.co</span>
+                    <span className="text-2xl font-black tracking-tighter">KREVO</span>
+                    <span className="text-[10px] font-medium tracking-widest text-gray-500 uppercase mt-1">.ID</span>
                 </Link>
 
                 {/* Desktop Links */}
