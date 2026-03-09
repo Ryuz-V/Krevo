@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ONYX TEE | E-Commerce",
-  description: "E-Commerce website for ONYX TEE collection 2025.",
+  title: "KREVO.ID",
+  description: "E-Commerce website for KREVO.ID collection 2026.",
 };
 
 export default function RootLayout({

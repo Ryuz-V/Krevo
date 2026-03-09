@@ -13,12 +13,11 @@ export default function Navbar() {
 
                 {/* Desktop Links */}
                 <div className="hidden md:flex items-center space-x-8 text-xs font-bold tracking-widest uppercase text-gray-900">
-                    <Link href="#" className="hover:text-black transition-colors">Clothing</Link>
-                    <Link href="#" className="hover:text-black transition-colors">Accessories</Link>
-                    <Link href="#" className="hover:text-black transition-colors">Home Decor</Link>
-                    <Link href="#" className="hover:text-black transition-colors">Collections</Link>
-                    <Link href="#" className="hover:text-black transition-colors">New Arrivals</Link>
-                    <Link href="#" className="hover:text-black transition-colors">Sales</Link>
+                    <Link href="#" className="hover:text-black transition-colors">Beranda</Link>
+                    <Link href="#" className="hover:text-black transition-colors">Jelajah</Link>
+                    <Link href="#" className="hover:text-black transition-colors">Diskon</Link>
+                    <Link href="#" className="hover:text-black transition-colors">Tentang Kami</Link>
+                    <Link href="#" className="hover:text-black transition-colors">Bantuan</Link>
                 </div>
 
                 {/* Right Icons */}

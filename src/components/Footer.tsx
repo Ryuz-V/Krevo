@@ -78,11 +78,11 @@ export default function Footer() {
             {/* Footer Bottom */}
             <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-gray-100">
                 <div className="flex items-center space-x-4 mb-4 md:mb-0">
-                    <Link href="#" className="text-sm font-black tracking-tighter">ONYX <span className="text-xs text-gray-400 font-normal">TEE</span></Link>
-                    <span className="text-[10px] text-gray-400">ONYX TEE, a Havens Glover LLC brand.</span>
+                    <Link href="#" className="text-sm font-black tracking-tighter">KREVO <span className="text-xs text-gray-400 font-normal">.ID</span></Link>
+                    <span className="text-[10px] text-gray-400">KREVO.ID, a Havens Glover LLC brand.</span>
                 </div>
                 <div className="flex items-center space-x-4">
-                    <span className="text-[10px] text-gray-400">&copy; 2025 ONYX TEE</span>
+                    <span className="text-[10px] text-gray-400">&copy; 2026 KREVO.ID</span>
                 </div>
             </div>
         </footer>
