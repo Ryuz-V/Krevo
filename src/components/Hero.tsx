@@ -11,7 +11,7 @@ export default function Hero() {
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 1.5, ease: "easeOut" }}
                 className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-80"
-                style={{ backgroundImage: "url('/images/hero_banner_1771688364802.png')" }}
+                style={{ backgroundImage: "url('/images/Hero.webp')" }}
             />
 
             {/* Overlay Content */}
