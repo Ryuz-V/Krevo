@@ -32,9 +32,9 @@ export default function Home() {
 
       <PromoBanner />
 
-      <div className="mt-12 mb-20 bg-white flex flex-col gap-12 md:gap-16">
-        <ProductCarousel title="Untuk Kamu" products={mensProducts} />
-        <ProductCarousel title="Rekomendasi Lainnya" products={bagsProducts} />
+      <div className="mt-12 mb-20 bg-white flex flex-col">
+        <ProductCarousel title="Untuk Kamu" products={mensProducts} hideArrows={true} />
+        <ProductCarousel title="Rekomendasi Lainnya" products={bagsProducts} hideHeader={true} />
       </div>
     </div>
   );

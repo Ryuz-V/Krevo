@@ -17,28 +17,34 @@ export type Product = {
 type ProductCarouselProps = {
     title: string;
     products: Product[];
+    hideHeader?: boolean;
+    hideArrows?: boolean;
 };
 
-export default function ProductCarousel({ title, products }: ProductCarouselProps) {
+export default function ProductCarousel({ title, products, hideHeader = false, hideArrows = false }: ProductCarouselProps) {
     return (
-        <section className="w-full max-w-[1400px] mx-auto px-6 py-12">
+        <section className={`w-full max-w-[1400px] mx-auto px-6 ${hideHeader ? 'pb-12 pt-0' : 'py-0'}`}>
             {/* Header */}
-            <div className="flex flex-col sm:flex-row items-baseline sm:items-center justify-between mb-8">
-                <h2 className="text-xl md:text-2xl font-black tracking-tighter uppercase mb-4 sm:mb-0">{title}</h2>
-                <div className="flex items-center justify-end space-x-4 w-full sm:w-auto">
-                    <Link href="#" className="text-xs font-bold tracking-widest uppercase hover:text-gray-600 border-b border-black pb-1">
-                        Lihat Semua
-                    </Link>
-                    <div className="flex items-center space-x-1">
-                        <button className="p-2 bg-gray-50 text-gray-400 hover:text-black hover:bg-gray-200 transition-colors">
-                            <ChevronLeft className="w-4 h-4" />
-                        </button>
-                        <button className="p-2 bg-gray-50 text-gray-400 hover:text-black hover:bg-gray-200 transition-colors">
-                            <ChevronRight className="w-4 h-4" />
-                        </button>
+            {!hideHeader && (
+                <div className="flex flex-col sm:flex-row items-baseline sm:items-center justify-between mb-8">
+                    <h2 className="text-xl md:text-2xl font-black tracking-tighter uppercase mb-4 sm:mb-0">{title}</h2>
+                    <div className="flex items-center justify-end space-x-4 w-full sm:w-auto">
+                        <Link href="#" className="text-xs font-bold tracking-widest uppercase hover:text-gray-600 border-b border-black pb-1">
+                            Lihat Semua
+                        </Link>
+                        {!hideArrows && (
+                            <div className="flex items-center space-x-1">
+                                <button className="p-2 bg-gray-50 text-gray-400 hover:text-black hover:bg-gray-200 transition-colors">
+                                    <ChevronLeft className="w-4 h-4" />
+                                </button>
+                                <button className="p-2 bg-gray-50 text-gray-400 hover:text-black hover:bg-gray-200 transition-colors">
+                                    <ChevronRight className="w-4 h-4" />
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
-            </div>
+            )}
 
             {/* Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
