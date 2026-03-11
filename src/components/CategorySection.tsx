@@ -41,21 +41,18 @@ export default function CategorySection() {
                 <div className="flex-1">
                     <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-4">Kategori</h2>
                 </div>
-                <div className="flex items-center space-x-2 shrink-0">
-                    <button
-                        onClick={() => scroll('left')}
-                        aria-label="Scroll left"
-                        className="flex items-center justify-center w-14 h-14 bg-gray-50 hover:bg-black hover:text-white transition-colors group"
-                    >
-                        <ChevronLeft className="w-6 h-6 group-hover:-translate-x-1 transition-transform" />
-                    </button>
-                    <button
-                        onClick={() => scroll('right')}
-                        aria-label="Scroll right"
-                        className="flex items-center justify-center w-14 h-14 bg-gray-50 hover:bg-black hover:text-white transition-colors group"
-                    >
-                        <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-                    </button>
+                <div className="flex items-center justify-end space-x-4 w-full sm:w-auto">
+                    <Link href="#" className="text-xs font-bold tracking-widest uppercase hover:text-gray-600 border-b border-black pb-1">
+                        Lihat Semua
+                    </Link>
+                    <div className="flex items-center space-x-1">
+                        <button className="p-2 bg-gray-50 text-gray-400 hover:text-black hover:bg-gray-200 transition-colors">
+                            <ChevronLeft className="w-4 h-4" />
+                        </button>
+                        <button className="p-2 bg-gray-50 text-gray-400 hover:text-black hover:bg-gray-200 transition-colors">
+                            <ChevronRight className="w-4 h-4" />
+                        </button>
+                    </div>
                 </div>
             </motion.div>
 
@@ -113,12 +110,7 @@ export default function CategorySection() {
                 </div>
             </div>
 
-            <div className="mt-8 flex justify-center">
-                <Link href="/categories" className="group flex items-center space-x-2 text-sm font-black uppercase tracking-widest hover:text-gray-500 transition-colors">
-                    <span className="border-b-2 border-black group-hover:border-gray-500 pb-1">View All Categories</span>
-                    <ArrowUpRight className="w-4 h-4 mb-0.5" />
-                </Link>
-            </div>
+
         </section>
     );
 }

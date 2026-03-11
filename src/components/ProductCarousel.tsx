@@ -27,7 +27,7 @@ export default function ProductCarousel({ title, products }: ProductCarouselProp
                 <h2 className="text-xl md:text-2xl font-black tracking-tighter uppercase mb-4 sm:mb-0">{title}</h2>
                 <div className="flex items-center justify-end space-x-4 w-full sm:w-auto">
                     <Link href="#" className="text-xs font-bold tracking-widest uppercase hover:text-gray-600 border-b border-black pb-1">
-                        Show All
+                        Lihat Semua
                     </Link>
                     <div className="flex items-center space-x-1">
                         <button className="p-2 bg-gray-50 text-gray-400 hover:text-black hover:bg-gray-200 transition-colors">

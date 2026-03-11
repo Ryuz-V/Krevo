@@ -10,7 +10,7 @@ export default function Hero() {
                 initial={{ scale: 1.15, opacity: 0.5 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 2, ease: "easeOut" }}
-                className="absolute top-12 inset-x-0 bottom-0 z-0 bg-cover bg-center bg-no-repeat"
+                className="absolute top-0 inset-x-0 bottom-0 z-0 bg-cover bg-center bg-no-repeat"
                 style={{ backgroundImage: "url('/images/Hero.webp')" }}
             >
                 {/* Darkening layer */}
@@ -21,12 +21,12 @@ export default function Hero() {
             <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 h-full flex flex-col justify-center mt-0">
 
                 {/* Huge KREVO Text block */}
-                <div className="relative w-full flex flex-col items-start justify-center mt-20 -ml-2 md:-ml-4">
+                <div className="relative w-full flex flex-col items-start justify-center mt-6 -ml-2 md:-ml-4">
                     <motion.h1
                         initial={{ x: -50, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.6, duration: 1 }}
-                        className="text-[80px] md:text-[130px] lg:text-[180px] font-black text-[#e4572e] leading-none tracking-tighter"
+                        className="text-[85px] md:text-[135px] lg:text-[190px] font-black text-[#e4572e] leading-none tracking-tighter"
                     >
                         KREVO
                     </motion.h1>

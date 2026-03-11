@@ -25,12 +25,17 @@ export default function Home() {
       <CategorySection />
 
       <div className="mt-12 bg-white">
-        <ProductCarousel title="Latest Men's" products={mensProducts} />
+        <ProductCarousel title="New Arrival" products={mensProducts} />
         <div className="my-12 md:my-16" />
-        <ProductCarousel title="Latest Tote + Bags + Backpacks" products={bagsProducts} />
+        <ProductCarousel title="Trending" products={bagsProducts} />
       </div>
 
       <PromoBanner />
+
+      <div className="mt-12 mb-20 bg-white flex flex-col gap-12 md:gap-16">
+        <ProductCarousel title="Untuk Kamu" products={mensProducts} />
+        <ProductCarousel title="Rekomendasi Lainnya" products={bagsProducts} />
+      </div>
     </div>
   );
 }
