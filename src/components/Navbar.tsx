@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Search, User, ShoppingBag, Bell, MessageSquare } from 'lucide-react';
+import { Search, User, ShoppingBag, Bell, MessageSquare, Store } from 'lucide-react';
 
 export default function Navbar() {
     return (
@@ -13,7 +13,7 @@ export default function Navbar() {
                         <span className="text-[10px] font-medium tracking-widest text-gray-500 uppercase mt-1">.ID</span>
                     </Link>
                     {/* Search Bar - Moved inside left container */}
-                    <div className="hidden md:flex items-center w-[400px] lg:w-[500px]">
+                    <div className="hidden md:flex flex-1 items-center w-full mr-4 lg:mr-8">
                         <div className="flex w-full items-center bg-gray-100 rounded-lg px-4 py-2 border border-gray-200 focus-within:border-gray-400 transition-colors">
                             <Search className="w-5 h-5 text-gray-500 shrink-0" />
                             <input
@@ -90,14 +90,20 @@ export default function Navbar() {
                         </div>
                     </div>
 
-                    <div className="w-px h-6 bg-gray-200 mx-2"></div>
+                    <div className="w-px h-6 bg-gray-200 mx-4"></div>
 
-                    <button aria-label="Shop" className=""></button>
+                    {/* Shop Button */}
+                    <Link href="/seller">
+                        <button aria-label="Shop" className="flex items-center space-x-2 text-gray-900 border border-gray-200 rounded-lg px-4 py-2 hover:bg-black hover:text-white transition-colors">
+                            <Store className="w-4 h-4" />
+                            <span className="text-xs font-bold uppercase tracking-widest">Toko</span>
+                        </button>
+                    </Link>
 
-                    {/* User Profile */}
-                    <button aria-label="Account" className="text-gray-900 hover:text-black transition-colors">
-                        <User className="w-5 h-5" />
-                    </button>
+                    {/* Register Button */}
+                    <Link href="/register" className="bg-black text-white px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors flex items-center justify-center">
+                        Daftar
+                    </Link>
                 </div>
             </div>
         </nav>
