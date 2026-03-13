@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
     await connectDB();
 
-    const { name, description, address, city } = await req.json();
+    const { name, description, address, city, logo, banner } = await req.json();
 
     const cookie = req.headers.get("cookie");
     const token = cookie?.split("token=")[1];
@@ -31,7 +31,9 @@ export async function POST(req: Request) {
       description,
       address,
       city,
-      owner: userId
+      owner: userId,
+      logo,
+      banner
     });
 
     await User.findByIdAndUpdate(userId, {
