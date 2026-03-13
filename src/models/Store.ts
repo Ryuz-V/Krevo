@@ -19,11 +19,13 @@ const StoreSchema = new mongoose.Schema({
   },
 
   logo: {
-    type: String
+    url: String,
+    public_id: String
   },
 
   banner: {
-    type: String
+    url: String,
+    public_id: String
   },
 
   address: {

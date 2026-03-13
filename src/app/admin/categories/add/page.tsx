@@ -2,10 +2,18 @@
 
 import { useState } from "react"
 
+type ImageType = {
+  url:string
+  public_id:string
+}
+
 export default function AddCategory(){
 
   const [name,setName] = useState("")
-  const [image,setImage] = useState("")
+  const [image,setImage] = useState<ImageType | null>(null)
+  const [imageFile,setImageFile] = useState<File | null>(null)
+
+  const [uploading,setUploading] = useState(false)
 
   const uploadImage = async(file:File)=>{
 
@@ -15,22 +23,34 @@ export default function AddCategory(){
     formData.append("upload_preset","krevoid")
 
     const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_NAME}/image/upload`,
+      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/image/upload`,
       {
-        method: "POST",
-        body: formData
+        method:"POST",
+        body:formData
       }
     )
 
     const data = await res.json()
 
-    return data.secure_url
+    return {
+      url:data.secure_url,
+      public_id:data.public_id
+    }
 
   }
 
   const handleSubmit = async(e:any)=>{
 
     e.preventDefault()
+
+    if(!imageFile){
+      alert("Image required")
+      return
+    }
+
+    setUploading(true)
+
+    const uploadedImage = await uploadImage(imageFile)
 
     await fetch("/api/categories/create",{
 
@@ -42,10 +62,12 @@ export default function AddCategory(){
 
       body:JSON.stringify({
         name,
-        image
+        image:uploadedImage
       })
 
     })
+
+    setUploading(false)
 
     alert("Category created")
 
@@ -64,18 +86,27 @@ export default function AddCategory(){
 
       <input
       type="file"
-      onChange={async(e:any)=>{
+      onChange={(e:any)=>{
 
         const file = e.target.files?.[0]
 
-        const url = await uploadImage(file)
+        if(!file) return
 
-        setImage(url)
+        setImageFile(file)
+
+        setImage({
+          url:URL.createObjectURL(file),
+          public_id:""
+        })
 
       }}
       />
 
-      {image && <img src={image} width={120}/>}
+      {image && (
+        <img src={image.url} width={120}/>
+      )}
+
+      {uploading && <p>Uploading...</p>}
 
       <button>
         Add Category

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { connectDB } from "@/lib/mongodb"
 import Category from "@/models/Category"
+import cloudinary from "@/lib/cloudinary"
 
 export async function PUT(
   req:Request,
@@ -36,6 +37,18 @@ export async function DELETE(
   await connectDB()
 
   const {id} = await context.params
+
+  const category = await Category.findById(id)
+
+  if(!category){
+    return NextResponse.json({message:"Not found"})
+  }
+
+  if(category.image?.public_id){
+    await cloudinary.uploader.destroy(
+      category.image.public_id
+    )
+  }
 
   await Category.findByIdAndDelete(id)
 

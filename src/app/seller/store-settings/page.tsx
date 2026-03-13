@@ -9,8 +9,16 @@ export default function StoreSettings() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
-  const [logo, setLogo] = useState("");
-  const [banner, setBanner] = useState("");
+  type ImageType = {
+    url: string
+    public_id: string
+  }
+
+  const [logo, setLogo] = useState<ImageType | null>(null)
+  const [banner, setBanner] = useState<ImageType | null>(null)
+
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
 
   const [uploading, setUploading] = useState(false);
 
@@ -25,8 +33,8 @@ export default function StoreSettings() {
 
       setName(data.name || "");
       setDescription(data.description || "");
-      setLogo(data.logo || "");
-      setBanner(data.banner || "");
+      setLogo(data.logo || null)
+      setBanner(data.banner || null)
     };
 
     loadStore();
@@ -35,33 +43,45 @@ export default function StoreSettings() {
 
   const uploadImage = async (file: File) => {
 
-  const formData = new FormData();
+    const formData = new FormData()
 
-  formData.append("file", file);
-  formData.append("upload_preset", "krevoid");
+    formData.append("file", file)
+    formData.append("upload_preset", "krevoid")
 
-  console.log("Uploading with preset: krevoid");
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/image/upload`,
+      {
+        method:"POST",
+        body:formData
+      }
+    )
 
-  const res = await fetch(
-    "https://api.cloudinary.com/v1_1/dbovn8n06/image/upload",
-    {
-      method: "POST",
-      body: formData
+    const data = await res.json()
+
+    return {
+      url: data.secure_url,
+      public_id: data.public_id
     }
-  );
-
-  const data = await res.json();
-
-  console.log("Cloudinary response:", data);
-
-  return data.secure_url;
-};
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
 
     e.preventDefault();
 
     try {
+
+      setUploading(true);
+
+      let finalLogo = logo
+      let finalBanner = banner
+
+      if (logoFile) {
+        finalLogo = await uploadImage(logoFile)
+      }
+
+      if (bannerFile) {
+        finalBanner = await uploadImage(bannerFile)
+      }
 
       const res = await fetch("/api/store/update", {
         method: "PUT",
@@ -71,13 +91,14 @@ export default function StoreSettings() {
         body: JSON.stringify({
           name,
           description,
-          logo,
-          banner
+          logo: finalLogo,
+          banner: finalBanner
         })
       });
 
       if (!res.ok) {
         alert("Update failed");
+        setUploading(false);
         return;
       }
 
@@ -86,10 +107,13 @@ export default function StoreSettings() {
       const updated = await res.json();
       setStore(updated);
 
+      setUploading(false);
+
     } catch (error) {
 
       console.log(error);
       alert("Error updating store");
+      setUploading(false);
 
     }
   };
@@ -125,15 +149,18 @@ export default function StoreSettings() {
 
           <input
             type="file"
-            onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 
               const file = e.target.files?.[0];
 
               if (!file) return;
 
-              const url = await uploadImage(file);
+              setLogoFile(file);
 
-              if (url) setLogo(url);
+              setLogo({
+                url: URL.createObjectURL(file),
+                public_id: ""
+              })
 
             }}
           />
@@ -141,7 +168,7 @@ export default function StoreSettings() {
           {logo && (
             <div>
               <p>Logo Preview</p>
-              <img src={logo} width={120} />
+              <img src={logo.url} width={120} />
             </div>
           )}
 
@@ -153,15 +180,18 @@ export default function StoreSettings() {
 
           <input
             type="file"
-            onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 
               const file = e.target.files?.[0];
 
               if (!file) return;
 
-              const url = await uploadImage(file);
+              setBannerFile(file);
 
-              if (url) setBanner(url);
+              setBanner({
+                url: URL.createObjectURL(file),
+                public_id: ""
+              })
 
             }}
           />
@@ -169,7 +199,7 @@ export default function StoreSettings() {
           {banner && (
             <div>
               <p>Banner Preview</p>
-              <img src={banner} width={400} />
+              <img src={banner.url} width={400} />
             </div>
           )}
 

@@ -8,16 +8,16 @@ export async function POST(req:Request){
 
   const {name,image} = await req.json()
 
-  const slug = name
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g,"-")
+const slug = name
+  .toLowerCase()
+  .trim()
+  .replace(/\s+/g,"-")
 
-  const category = await Category.create({
-    name,
-    slug,
-    image
-  })
+const category = await Category.create({
+  name,
+  slug,
+  image
+})
 
   return NextResponse.json(category)
 
