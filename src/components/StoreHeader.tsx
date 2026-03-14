@@ -1,16 +1,6 @@
 import { Star, MapPin, ShoppingBag, MessageCircle, Share2, BadgeCheck } from "lucide-react"
+import { Store } from "../types/store"
 
-interface Store {
-  _id: string
-  name: string
-  slug: string
-  description: string
-  logo?: { url: string }
-  banner?: { url: string }
-  address: string
-  city: string
-  storeStatus: string
-}
 
 export default function StoreHeader({ store }: { store: Store }) {
   return (
