@@ -1,4 +1,5 @@
 import StoreHeader from "@/components/StoreHeader"
+import StoreBanner from "@/components/StoreBanner"
 
 async function getStore(slug: string) {
   const res = await fetch(
@@ -35,6 +36,7 @@ export default async function StorePage(
 
       <StoreHeader store={store} />
 
+      <StoreBanner store={store} />
 
       <h2>Products</h2>
 
