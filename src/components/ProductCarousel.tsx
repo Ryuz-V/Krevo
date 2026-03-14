@@ -23,7 +23,7 @@ type ProductCarouselProps = {
 
 export default function ProductCarousel({ title, products, hideHeader = false, hideArrows = false }: ProductCarouselProps) {
     return (
-        <section className={`w-full max-w-[1400px] mx-auto px-6 ${hideHeader ? 'pb-12 pt-0' : 'py-0'}`}>
+        <section className={`w-full max-w-350 mx-auto px-6 ${hideHeader ? 'pb-12 pt-0' : 'py-0'}`}>
             {/* Header */}
             {!hideHeader && (
                 <div className="flex flex-col sm:flex-row items-baseline sm:items-center justify-between mb-8">
@@ -57,7 +57,7 @@ export default function ProductCarousel({ title, products, hideHeader = false, h
                         transition={{ duration: 0.5, delay: index * 0.1 }}
                         className="group flex flex-col cursor-pointer"
                     >
-                        <div className="relative w-full aspect-square md:aspect-[4/5] bg-gray-50 mb-4 overflow-hidden flex items-center justify-center p-8 transition-colors group-hover:bg-gray-100">
+                        <div className="relative w-full aspect-square md:aspect-4/5 bg-gray-50 mb-4 overflow-hidden flex items-center justify-center p-8 transition-colors group-hover:bg-gray-100">
                             {product.badge && (
                                 <div className={`absolute top-4 left-4 text-[9px] font-black px-2 py-1 tracking-widest text-white uppercase z-10 ${product.badge === 'SALE' ? 'bg-[#ff4e00]' : 'bg-black'}`}>
                                     {product.badge}

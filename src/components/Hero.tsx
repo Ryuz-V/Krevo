@@ -10,7 +10,7 @@ export default function Hero() {
                 initial={{ scale: 1.15, opacity: 0.5 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 2, ease: "easeOut" }}
-                className="absolute top-16 inset-x-0 bottom-[-4rem] z-0 bg-cover bg-center bg-no-repeat"
+                className="absolute top-16 inset-x-0 -bottom-16 z-0 bg-cover bg-center bg-no-repeat"
                 style={{ backgroundImage: "url('/images/Hero.webp')" }}
             >
                 {/* Darkening layer */}
@@ -18,7 +18,7 @@ export default function Hero() {
             </motion.div>
 
             {/* Overlay Content */}
-            <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 h-full flex flex-col justify-center mt-16">
+            <div className="relative z-10 w-full max-w-350 mx-auto px-6 h-full flex flex-col justify-center mt-16">
 
                 {/* Huge KREVO Text block */}
                 <div className="relative w-full flex flex-col items-start justify-center mt-6 -ml-2 md:-ml-4">
@@ -35,7 +35,7 @@ export default function Hero() {
                         initial={{ y: 50, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.9, duration: 1 }}
-                        className="flex flex-row items-baseline mt-2 md:mt-4 ml-2 max-w-[1400px]"
+                        className="flex flex-row items-baseline mt-2 md:mt-4 ml-2 max-w-350"
                     >
                         <h2 className="text-white text-2xl md:text-3xl lg:text-[40px] font-black tracking-tighter leading-none">
                             Collection
