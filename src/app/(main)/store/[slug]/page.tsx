@@ -1,5 +1,6 @@
 import StoreHeader from "@/components/StoreHeader"
 import StoreBanner from "@/components/StoreBanner"
+import StoreProductGrid from "@/components/StoreProductGrid"
 
 async function getStore(slug: string) {
   const res = await fetch(
@@ -38,17 +39,7 @@ export default async function StorePage(
 
       <StoreBanner store={store} />
 
-      <h2>Products</h2>
-
-      {products.map((product: any) => (
-        <div key={product._id}>
-          <a href={`/store/${slug}/product/${product._id}`}>
-            <img src={product.mainImage?.url} width={150} />
-            <h3>{product.name}</h3>
-            <p>Rp {product.price}</p>
-          </a>
-        </div>
-      ))}
+      <StoreProductGrid products={products} slug={slug} />
 
     </div>
   )
