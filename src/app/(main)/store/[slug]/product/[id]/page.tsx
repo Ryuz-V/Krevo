@@ -34,7 +34,7 @@ export default async function ProductPage(
       <h1>{product.name}</h1>
 
       <img
-        src={product.mainImage}
+        src={product.mainImage.url}
         width={300}
       />
 
@@ -42,8 +42,8 @@ export default async function ProductPage(
 
       <p>{product.description}</p>
 
-      {product.galleryImages?.map((img:string,i:number)=>(
-        <img key={i} src={img} width={120}/>
+      {product.galleryImages?.map((img: { url: string }, i: number) => (
+        <img key={i} src={img.url} width={120} />
       ))}
 
     </div>
