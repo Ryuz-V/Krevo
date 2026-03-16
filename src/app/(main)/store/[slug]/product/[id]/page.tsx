@@ -1,53 +1,56 @@
-async function getProduct(id:string){
+import { notFound } from "next/navigation";
+import ProductDetail from "./ProductDetail";
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`,
-    { cache:"no-store" }
-  )
+// ─── Types ────────────────────────────────────────────────────────────────────
 
-  if(!res.ok){
-    return null
-  }
-
-  return res.json()
-
+export interface GalleryImage {
+  url: string;
 }
 
-export default async function ProductPage(
-  context:{
-    params:Promise<{slug:string,id:string}>
-  }
-){
+export interface Product {
+  name: string;
+  price: number;
+  description: string;
+  mainImage: { url: string };
+  galleryImages?: GalleryImage[];
+  rating?: number;
+  reviewCount?: number;
+  soldCount?: number;
+}
 
-  const { id } = await context.params
+// ─── Data Fetching ────────────────────────────────────────────────────────────
 
-  const product = await getProduct(id)
+async function getProduct(id: string): Promise<Product | null> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`,
+    {
+      // Cache hasil fetch, revalidate setiap 60 detik.
+      // Ganti angkanya sesuai seberapa sering data produk berubah.
+      next: { revalidate: 60 },
+    }
+  );
 
-  if(!product){
-    return <h1>Product not found</h1>
-  }
+  if (!res.ok) return null;
+  return res.json();
+}
 
-  return(
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
-    <div>
+interface PageProps {
+  params: Promise<{ slug: string; id: string }>;
+}
 
-      <h1>{product.name}</h1>
+export default async function ProductPage({ params }: PageProps) {
+  const { id } = await params;
+  const product = await getProduct(id);
 
-      <img
-        src={product.mainImage.url}
-        width={300}
-      />
+  if (!product) notFound();
 
-      <h3>Rp {product.price}</h3>
-
-      <p>{product.description}</p>
-
-      {product.galleryImages?.map((img: { url: string }, i: number) => (
-        <img key={i} src={img.url} width={120} />
-      ))}
-
-    </div>
-
-  )
-
+  return (
+    <main className="min-h-screen bg-white">
+      <div className="max-w-[1400px] mx-auto px-6 py-6 lg:py-10">
+        <ProductDetail product={product} />
+      </div>
+    </main>
+  );
 }
