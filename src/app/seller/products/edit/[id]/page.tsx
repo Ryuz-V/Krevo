@@ -208,9 +208,6 @@ export default function EditProduct() {
         <h1 style={{ margin: 0, fontSize: "24px", fontWeight: "600", color: "#0a0a0a", letterSpacing: "-0.02em" }}>
           Edit Produk
         </h1>
-        <p style={{ margin: "4px 0 0", fontSize: "14px", color: "#888" }}>
-          Foto lama akan otomatis dihapus dari Cloudinary saat diganti
-        </p>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -282,7 +279,7 @@ export default function EditProduct() {
             Foto Utama
           </p>
           <p style={{ margin: "0 0 16px", fontSize: "12px", color: "#aaa" }}>
-            Pilih foto baru untuk mengganti — foto lama dihapus otomatis
+            Pilih foto baru
           </p>
 
           <div style={{ display: "flex", alignItems: "flex-start", gap: "16px" }}>
@@ -338,7 +335,7 @@ export default function EditProduct() {
                 </p>
               ) : (
                 <p style={{ margin: "8px 0 0", fontSize: "12px", color: "#aaa" }}>
-                  Foto saat ini akan tetap dipakai jika tidak diganti
+                  Foto saat
                 </p>
               )}
             </div>
