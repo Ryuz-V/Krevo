@@ -1,82 +1,114 @@
 "use client"
 
-import Link from "next/link"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
+import Sidebar from "@/components/DashboardSeller/Sidebar"
 
 export default function SellerLayout({
-  children
-}:{children:React.ReactNode}){
-
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const router = useRouter()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  const handleLogout = ()=>{
-
+  const handleLogout = () => {
     document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00"
-
     router.push("/login")
-
   }
 
-  return(
+  return (
+    <>
+      <style>{`
+        .seller-layout * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+      `}</style>
 
-    <div style={{display:"flex",minHeight:"100vh"}}>
-
-      <aside
-      style={{
-        width:"220px",
-        background:"#111",
-        color:"#fff",
-        padding:"20px"
-      }}
+      <div
+        className="seller-layout"
+        style={{ display: "flex", minHeight: "100vh", fontFamily: "'DM Sans', sans-serif" }}
       >
+        <Sidebar
+          onLogout={handleLogout}
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
 
-        <h2>Krevo Seller</h2>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
 
-        <nav style={{display:"flex",flexDirection:"column",gap:"10px"}}>
-
-          <Link href="/seller">Dashboard</Link>
-
-          <Link href="/seller/products">
-            Products
-          </Link>
-
-          <Link href="/seller/products/add">
-            Add Product
-          </Link>
-
-          <Link href="/seller/store-settings">
-            Store Settings
-          </Link>
-
-          <button
-          onClick={handleLogout}
-          style={{
-            marginTop:"20px",
-            background:"red",
-            color:"#fff",
-            border:"none",
-            padding:"8px",
-            cursor:"pointer"
-          }}
+          {/* Mobile topbar */}
+          <header
+            className="mobile-topbar"
+            style={{
+              display: "none",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "14px 20px",
+              background: "#ffffff",
+              borderBottom: "1px solid #ebebeb",
+              position: "sticky",
+              top: 0,
+              zIndex: 30,
+            }}
           >
-            Logout
-          </button>
+            {/* Hamburger */}
+            <button
+              onClick={() => setSidebarOpen(true)}
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "center",
+                width: "36px", height: "36px",
+                background: "none", border: "none",
+                cursor: "pointer", borderRadius: "8px",
+                color: "#0a0a0a",
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <line x1="3" y1="12" x2="21" y2="12"/>
+                <line x1="3" y1="18" x2="21" y2="18"/>
+              </svg>
+            </button>
 
-        </nav>
+            {/* Logo tengah */}
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <div style={{
+                width: "26px", height: "26px",
+                background: "#0a0a0a", borderRadius: "6px",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+              </div>
+              <span style={{ fontSize: "14px", fontWeight: "600", color: "#0a0a0a" }}>Krevo Seller</span>
+            </div>
 
-      </aside>
+            {/* Spacer kanan biar logo tetap di tengah */}
+            <div style={{ width: "36px" }} />
+          </header>
 
-      <main
-      style={{
-        flex:1,
-        padding:"30px"
-      }}
-      >
-        {children}
-      </main>
+          <main style={{ flex: 1, padding: "40px", background: "#f9f9f9" }}
+            className="seller-main"
+          >
+            {children}
+          </main>
+        </div>
+      </div>
 
-    </div>
-
+      <style>{`
+        @media (max-width: 768px) {
+          .mobile-topbar {
+            display: flex !important;
+          }
+          .seller-main {
+            padding: 24px 16px !important;
+          }
+        }
+      `}</style>
+    </>
   )
-
 }
