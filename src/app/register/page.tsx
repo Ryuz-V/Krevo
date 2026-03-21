@@ -28,7 +28,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-5rem)] items-center justify-center bg-white px-4 -mt-10">
+    <div className="flex min-h-[calc(100vh-5rem)] items-center justify-center bg-white px-4 mt-6">
       <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-2xl shadow-2xl border border-gray-200">
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900">

@@ -40,9 +40,16 @@ export async function POST(req: Request) {
       role: "seller"
     });
 
+    const newToken = jwt.sign(
+      { userId, role: "seller" },
+      process.env.JWT_SECRET!,
+      { expiresIn: "7d" }
+    );
+
     return NextResponse.json({
       message: "Store created",
-      store
+      store,
+      token: newToken
     });
 
   } catch (error) {

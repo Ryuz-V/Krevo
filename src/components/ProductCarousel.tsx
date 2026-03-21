@@ -19,9 +19,10 @@ type ProductCarouselProps = {
     products: Product[];
     hideHeader?: boolean;
     hideArrows?: boolean;
+    hideSeeAll?: boolean;
 };
 
-export default function ProductCarousel({ title, products, hideHeader = false, hideArrows = false }: ProductCarouselProps) {
+export default function ProductCarousel({ title, products, hideHeader = false, hideArrows = false, hideSeeAll = false }: ProductCarouselProps) {
     return (
         <section className={`w-full max-w-350 mx-auto px-6 ${hideHeader ? 'pb-12 pt-0' : 'py-0'}`}>
             {/* Header */}
@@ -29,9 +30,11 @@ export default function ProductCarousel({ title, products, hideHeader = false, h
                 <div className="flex flex-col sm:flex-row items-baseline sm:items-center justify-between mb-8">
                     <h2 className="text-xl md:text-2xl font-black tracking-tighter uppercase mb-4 sm:mb-0">{title}</h2>
                     <div className="flex items-center justify-end space-x-4 w-full sm:w-auto">
-                        <Link href="#" className="text-xs font-bold tracking-widest uppercase hover:text-gray-600 border-b border-black pb-1">
-                            Lihat Semua
-                        </Link>
+                        {!hideSeeAll && (
+                            <Link href="#" className="text-xs font-bold tracking-widest uppercase hover:text-gray-600 border-b border-black pb-1">
+                                Lihat Semua
+                            </Link>
+                        )}
                         {!hideArrows && (
                             <div className="flex items-center space-x-1">
                                 <button className="p-2 bg-gray-50 text-gray-400 hover:text-black hover:bg-gray-200 transition-colors">
@@ -47,7 +50,7 @@ export default function ProductCarousel({ title, products, hideHeader = false, h
             )}
 
             {/* Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-16">
                 {products.map((product, index) => (
                     <motion.div
                         key={product.id}

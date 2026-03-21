@@ -1,41 +1,82 @@
-import Hero from '@/components/Hero';
-import CategorySection from '@/components/CategorySection';
-import ProductCarousel, { Product } from '@/components/ProductCarousel';
-import PromoBanner from '@/components/PromoBanner';
+import { cookies } from 'next/headers';
+import HomeComponent from '@/components/Home/HomePage';
+import LandingPage from '@/components/Home/LandingPage';
+import { connectDB } from '@/lib/mongodb';
+import User from '@/models/User';
+import { Product } from '@/components/ProductCarousel';
 
-// Temporary mock data mapping to the newly generated images.
-const mensProducts: Product[] = [
-  { id: 'm1', name: 'Our Pride (Organic)', colors: 2, price: 79.99, image: '/images/product_tshirt_latest.png', badge: 'NEW' },
-  { id: 'm2', name: 'ONYX Embroidered Hoodie', colors: 2, price: 79.96, originalPrice: 99.99, image: '/images/product_tshirt_latest.png', badge: 'SALE' },
-  { id: 'm3', name: 'Onyx University Motto', colors: 5, price: 39.99, image: '/images/product_tshirt_latest.png' },
-  { id: 'm4', name: 'Onyx KEMET We Are Family', colors: 2, price: 29.00, image: '/images/product_tshirt_latest.png', badge: 'NEW' },
-];
+async function getExternalProducts() {
+  try {
+    const [arrivalsRes, trendingRes, forYouRes] = await Promise.all([
+      fetch('https://dummyjson.com/products/category/mens-shirts?limit=4'),
+      fetch('https://dummyjson.com/products/category/mens-shoes?limit=4'),
+      fetch('https://dummyjson.com/products?limit=30')
+    ]);
 
-const bagsProducts: Product[] = [
-  { id: 'b1', name: 'Blue Akan Beach Tote', colors: 1, price: 29.99, image: '/images/product_bag_latest.png', badge: 'NEW' },
-  { id: 'b2', name: 'Pink Akan Beach Tote', colors: 1, price: 29.99, image: '/images/product_bag_latest.png' },
-  { id: 'b3', name: 'Love/Wow/Peace Tote', colors: 1, price: 15.99, image: '/images/product_bag_latest.png' },
-  { id: 'b4', name: 'Mud Cloth Beach Tote', colors: 1, price: 29.99, originalPrice: 39.99, image: '/images/product_bag_latest.png', badge: 'SALE' },
-];
+    const [arrivalsData, trendingData, forYouData] = await Promise.all([
+      arrivalsRes.json(),
+      trendingRes.json(),
+      forYouRes.json()
+    ]);
 
-export default function Home() {
+    const mapProduct = (p: any): Product => ({
+      id: `ext-${p.id}`,
+      name: p.title,
+      colors: Math.floor(Math.random() * 3) + 1,
+      price: p.price,
+      image: p.thumbnail,
+      badge: p.discountPercentage > 15 ? 'SALE' : (p.id % 7 === 0 ? 'NEW' : undefined),
+      originalPrice: p.discountPercentage > 15 ? p.price / (1 - p.discountPercentage / 100) : undefined
+    });
+
+    return {
+      arrivals: arrivalsData.products.map(mapProduct),
+      trending: trendingData.products.map(mapProduct),
+      forYou: forYouData.products.map(mapProduct)
+    };
+  } catch (error) {
+    console.error("Error fetching external products:", error);
+    return { arrivals: [], trending: [], forYou: [] };
+  }
+}
+
+export default async function Page() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('token');
+  
+  const products = await getExternalProducts();
+  
+  let userName = "";
+  if (token && token.value) {
+    try {
+      const payloadBase64 = token.value.split('.')[1];
+      const payload = JSON.parse(Buffer.from(payloadBase64, 'base64').toString());
+      if (payload.userId) {
+        await connectDB();
+        const user = await User.findById(payload.userId);
+        if (user) userName = user.name;
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  }
+
   return (
-    <div className="flex flex-col w-full">
-      <Hero />
-      <CategorySection />
-
-      <div className="mt-12 bg-white">
-        <ProductCarousel title="New Arrival" products={mensProducts} />
-        <div className="my-12 md:my-16" />
-        <ProductCarousel title="Trending" products={bagsProducts} />
-      </div>
-
-      <PromoBanner />
-
-      <div className="mt-12 mb-20 bg-white flex flex-col">
-        <ProductCarousel title="Untuk Kamu" products={mensProducts} hideArrows={true} />
-        <ProductCarousel title="Rekomendasi Lainnya" products={bagsProducts} hideHeader={true} />
-      </div>
+    <div className="flex flex-col w-full bg-white">
+      {token ? (
+        <HomeComponent 
+          userName={userName || "Pelanggan Setia"} 
+          arrivals={products.arrivals}
+          trending={products.trending}
+          forYou={products.forYou}
+        />
+      ) : (
+        <LandingPage 
+          arrivals={products.arrivals}
+          trending={products.trending}
+          forYou={products.forYou}
+        />
+      )}
     </div>
   );
 }

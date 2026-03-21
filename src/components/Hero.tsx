@@ -21,7 +21,7 @@ export default function Hero() {
             <div className="relative z-10 w-full max-w-350 mx-auto px-6 h-full flex flex-col justify-center mt-16">
 
                 {/* Huge KREVO Text block */}
-                <div className="relative w-full flex flex-col items-start justify-center mt-6 -ml-2 md:-ml-4">
+                <div className="relative w-full flex flex-col items-start justify-center mt-16 -ml-2 md:-ml-4">
                     <motion.h1
                         initial={{ x: -50, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}

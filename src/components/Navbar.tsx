@@ -1,7 +1,21 @@
+'use client';
+
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Search, User, ShoppingBag, Bell, MessageSquare, Store } from 'lucide-react';
 
-export default function Navbar() {
+type NavbarProps = {
+    isLoggedIn?: boolean;
+};
+
+export default function Navbar({ isLoggedIn = false }: NavbarProps) {
+    const router = useRouter();
+
+    const handleLogout = () => {
+        document.cookie = "token=; Max-Age=0; path=/";
+        router.push("/login");
+    };
+
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm font-sans">
             <div className="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
@@ -93,17 +107,40 @@ export default function Navbar() {
                     <div className="w-px h-6 bg-gray-200 mx-4"></div>
 
                     {/* Shop Button */}
-                    <Link href="/seller">
+                    <Link href="/become-seller">
                         <button aria-label="Shop" className="flex items-center space-x-2 text-gray-900 border border-gray-200 rounded-lg px-4 py-2 hover:bg-black hover:text-white transition-colors">
                             <Store className="w-4 h-4" />
                             <span className="text-xs font-bold uppercase tracking-widest">Toko</span>
                         </button>
                     </Link>
 
-                    {/* Register Button */}
-                    <Link href="/register" className="bg-black text-white px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors flex items-center justify-center">
-                        Daftar
-                    </Link>
+                    {/* Register / Profile Button */}
+                    {isLoggedIn ? (
+                        <div className="relative group py-6 cursor-pointer">
+                            <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-900 group-hover:bg-gray-200 transition-colors border border-gray-200">
+                                <User className="w-5 h-5" />
+                            </div>
+                            {/* Profile Dropdown */}
+                            <div className="absolute right-0 top-[60px] w-48 bg-white shadow-xl rounded-xl border border-gray-100 hidden group-hover:block transition-all z-50 overflow-hidden">
+                                <div className="flex flex-col">
+                                    <Link href="/profile" className="px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors font-medium flex items-center gap-3">
+                                        <User className="w-4 h-4" /> Profile Saya
+                                    </Link>
+                                    <Link href="/settings" className="px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors font-medium flex items-center gap-3">
+                                        <span className="w-4 h-4 flex justify-center items-center">⚙️</span> Pengaturan
+                                    </Link>
+                                    <div className="border-t border-gray-100 my-1"></div>
+                                    <button onClick={handleLogout} className="px-4 py-3 text-sm text-red-600 hover:bg-red-50 text-left transition-colors font-bold w-full">
+                                        Keluar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <Link href="/register" className="bg-black text-white px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors flex items-center justify-center">
+                            Daftar
+                        </Link>
+                    )}
                 </div>
             </div>
         </nav>

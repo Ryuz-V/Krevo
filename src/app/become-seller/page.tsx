@@ -58,8 +58,15 @@ export default function BecomeSeller() {
       body: JSON.stringify({ name, description, address, city, logo: finalLogo, banner: finalBanner }),
     });
 
+    const data = await res.json();
     setUploading(false);
-    if (res.ok) router.push("/seller");
+
+    if (res.ok) {
+      if (data.token) {
+        document.cookie = `token=${data.token}; path=/`;
+      }
+      router.push("/seller");
+    }
   };
 
   return (
@@ -71,7 +78,7 @@ export default function BecomeSeller() {
           align-items: center;
           justify-content: center;
           padding: 40px 16px;
-          margin-top: -2.5rem;
+          margin-top: 2.5rem;
         }
 
         .seller-card {
