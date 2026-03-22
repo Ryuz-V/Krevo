@@ -107,7 +107,7 @@ export default function Navbar({ isLoggedIn = false }: NavbarProps) {
                     <div className="w-px h-6 bg-gray-200 mx-4"></div>
 
                     {/* Shop Button */}
-                    <Link href="/become-seller">
+                    <Link href={isLoggedIn ? "/become-seller" : "/login?redirect=/"}>
                         <button aria-label="Shop" className="flex items-center space-x-2 text-gray-900 border border-gray-200 rounded-lg px-4 py-2 hover:bg-black hover:text-white transition-colors">
                             <Store className="w-4 h-4" />
                             <span className="text-xs font-bold uppercase tracking-widest">Toko</span>

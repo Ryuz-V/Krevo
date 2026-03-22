@@ -6,14 +6,20 @@ import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 
 const categories = [
-    { id: 1, title: 'NEW ARRIVALS', itemCount: '120+ Items', image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=800&auto=format&fit=crop' },
-    { id: 2, title: 'MENSWEAR', itemCount: '340+ Items', image: 'https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=800&auto=format&fit=crop' },
-    { id: 3, title: 'WOMENSWEAR', itemCount: '450+ Items', image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop' },
-    { id: 4, title: 'FOOTWEAR', itemCount: '180+ Items', image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=800&auto=format&fit=crop' },
-    { id: 5, title: 'ACCESSORIES', itemCount: '95+ Items', image: 'https://images.unsplash.com/photo-1523206489230-c012c64b2b48?q=80&w=800&auto=format&fit=crop' },
-    { id: 6, title: 'ACTIVEWEAR', itemCount: '210+ Items', image: 'https://images.unsplash.com/photo-1518459031867-a89b944bffe4?q=80&w=800&auto=format&fit=crop' },
-    { id: 7, title: 'BAGS & TOTES', itemCount: '85+ Items', image: 'https://images.unsplash.com/photo-1584916201218-f4242ceb4809?q=80&w=800&auto=format&fit=crop' },
-    { id: 8, title: 'OUTERWEAR', itemCount: '110+ Items', image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=800&auto=format&fit=crop' },
+    { id: 1, title: 'PRODUK TERBARU', itemCount: '120+ Produk', image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=800&auto=format&fit=crop' },
+    { id: 2, title: 'PAKAIAN PRIA', itemCount: '320+ Produk', image: 'https://images.unsplash.com/photo-1614252369475-531eba835eb1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmFzaGlvbiUyMG1hbnxlbnwwfHwwfHx8MA%3D%3D' },
+    { id: 3, title: 'ELEKTRONIK', itemCount: '150+ Produk', image: 'https://images.unsplash.com/photo-1548780364-65517933892b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjJ8fHR2fGVufDB8fDB8fHww' },
+    { id: 4, title: 'SEPATU', itemCount: '240+ Produk', image: 'https://plus.unsplash.com/premium_photo-1682435561654-20d84cef00eb?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXxlbnwwfHwwfHx8MA%3D%3D' },
+    { id: 5, title: 'AKSESORIS FASHION', itemCount: '180+ Produk', image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=800&auto=format&fit=crop' },
+    { id: 6, title: 'PERAWATAN & KECANTIKAN', itemCount: '210+ Produk', image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=800&auto=format&fit=crop' },
+    { id: 7, title: 'HOBI & KOLEKSI', itemCount: '95+ Produk', image: 'https://images.unsplash.com/photo-1708312604109-16c0be9326cd?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8YmFkbWludG9ufGVufDB8fDB8fHww' },
+    { id: 8, title: 'TAS PRIA', itemCount: '85+ Produk', image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=800&auto=format&fit=crop' },
+    { id: 9, title: 'PAKAIAN WANITA', itemCount: '450+ Produk', image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop' },
+    { id: 10, title: 'PAKAIAN BAYI', itemCount: '120+ Produk', image: 'https://images.unsplash.com/photo-1522771930-78848d9293e8?q=80&w=800&auto=format&fit=crop' },
+    { id: 11, title: 'TAS WANITA', itemCount: '310+ Produk', image: 'https://images.unsplash.com/photo-1591348278863-a8fb3887e2aa?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHdvbWVuJTIwYmFnfGVufDB8fDB8fHww' },
+    { id: 12, title: 'BUKU & ALAT TULIS', itemCount: '140+ Produk', image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=800&auto=format&fit=crop' },
+    { id: 13, title: 'AKSESORIS HP & LAPTOP', itemCount: '220+ Produk', image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop' },
+    { id: 14, title: 'SOUVENIR & PERLENGKAPAN', itemCount: '110+ Produk', image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=800&auto=format&fit=crop' },
 ];
 
 export default function CategorySection() {
@@ -42,14 +48,17 @@ export default function CategorySection() {
                     <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-4">Kategori</h2>
                 </div>
                 <div className="flex items-center justify-end space-x-4 w-full sm:w-auto">
-                    <Link href="#" className="text-xs font-bold tracking-widest uppercase hover:text-gray-600 border-b border-black pb-1">
-                        Lihat Semua
-                    </Link>
                     <div className="flex items-center space-x-1">
-                        <button className="p-2 bg-gray-50 text-gray-400 hover:text-black hover:bg-gray-200 transition-colors">
+                        <button 
+                            onClick={() => scroll('left')}
+                            className="p-2 bg-gray-50 text-gray-400 hover:text-black hover:bg-gray-200 transition-colors"
+                        >
                             <ChevronLeft className="w-4 h-4" />
                         </button>
-                        <button className="p-2 bg-gray-50 text-gray-400 hover:text-black hover:bg-gray-200 transition-colors">
+                        <button 
+                            onClick={() => scroll('right')}
+                            className="p-2 bg-gray-50 text-gray-400 hover:text-black hover:bg-gray-200 transition-colors"
+                        >
                             <ChevronRight className="w-4 h-4" />
                         </button>
                     </div>

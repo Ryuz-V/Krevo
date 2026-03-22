@@ -1,4 +1,7 @@
-import LandingPage from '@/components/Home/LandingPage';
+import { cookies } from 'next/headers';
+import HomeComponent from '@/components/Home/HomePage';
+import { connectDB } from '@/lib/mongodb';
+import User from '@/models/User';
 import { Product } from '@/components/ProductCarousel';
 
 async function getExternalProducts() {
@@ -43,11 +46,30 @@ async function getExternalProducts() {
 }
 
 export default async function Page() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('token');
+  
   const products = await getExternalProducts();
+  
+  let userName = "";
+  if (token && token.value) {
+    try {
+      const payloadBase64 = token.value.split('.')[1];
+      const payload = JSON.parse(Buffer.from(payloadBase64, 'base64').toString());
+      if (payload.userId) {
+        await connectDB();
+        const user = await User.findById(payload.userId);
+        if (user) userName = user.name;
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  }
 
   return (
     <div className="flex flex-col w-full bg-white">
-      <LandingPage 
+      <HomeComponent 
+        userName={userName || "Pelanggan Setia"} 
         arrivals={products.arrivals}
         trending={products.trending}
         forYou={products.forYou}

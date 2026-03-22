@@ -26,20 +26,14 @@ export default function LoginPage() {
     const data = await res.json();
 
     if (data.token) {
-
       document.cookie = `token=${data.token}; path=/`;
 
-      const decoded: any = jwtDecode(data.token)
+      // Get redirect path from query string if available
+      const searchParams = new URLSearchParams(window.location.search);
+      const redirectPath = searchParams.get("redirect") || "/home";
 
-      if (decoded.role === "admin") {
-        router.push("/admin")
-      }
-      else if (decoded.role === "seller") {
-        router.push("/seller")
-      }
-      else {
-        router.push("/")
-      }
+      router.push(redirectPath);
+      router.refresh(); // Ensure the layout/server components re-fetch the token
     }
   }
 

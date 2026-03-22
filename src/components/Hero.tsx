@@ -38,7 +38,7 @@ export default function Hero() {
                         className="flex flex-row items-baseline mt-2 md:mt-4 ml-2 max-w-350"
                     >
                         <h2 className="text-white text-2xl md:text-3xl lg:text-[40px] font-black tracking-tighter leading-none">
-                            Collection
+                            Koleksi
                         </h2>
                         <p className="text-transparent text-2xl md:text-4xl lg:text-[50px] font-black tracking-widest leading-none ml-3 md:ml-4" style={{ WebkitTextStroke: '1px white' }}>
                             2026
@@ -57,7 +57,7 @@ export default function Hero() {
                         Bersama KREVO, mari dukung UMKM lokal<br /> dan bangun ekonomi kreatif dari produk-produk terbaik<br /> karya anak bangsa.
                     </p>
                     <button className="bg-white text-black px-8 py-4 text-xs font-bold tracking-widest uppercase hover:bg-gray-200 transition-colors">
-                        Discover KREVO
+                        Jelajahi KREVO
                     </button>
                 </motion.div>
 
