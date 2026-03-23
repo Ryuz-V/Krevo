@@ -47,19 +47,19 @@ function StarRating({ rating, count }: { rating: number; count: number }) {
 
 // ─── Breadcrumb ───────────────────────────────────────────────────────────────
 
-function Breadcrumb({ productName }: { productName: string }) {
+function Breadcrumb({ product }: { product: Product }) {
   return (
     <nav className="flex items-center gap-1.5 text-sm text-gray-500 mb-6 flex-wrap">
       <span className="hover:text-gray-800 cursor-pointer transition-colors">
-        Pakaian Pria
+        {product.category || 'Koleksi'}
       </span>
       <ChevronRight size={14} className="flex-shrink-0" />
       <span className="hover:text-gray-800 cursor-pointer transition-colors">
-        Kaos
+        {product.brand || 'KREVO'}
       </span>
       <ChevronRight size={14} className="flex-shrink-0" />
       <span className="text-gray-800 font-medium truncate max-w-[200px]">
-        {productName}
+        {product.name}
       </span>
     </nav>
   );
@@ -275,7 +275,7 @@ export default function ProductDetail({ product }: { product: Product }) {
 
   return (
     <>
-      <Breadcrumb productName={product.name} />
+      <Breadcrumb product={product} />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14">
 

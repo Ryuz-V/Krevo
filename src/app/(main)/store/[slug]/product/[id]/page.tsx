@@ -16,6 +16,9 @@ export interface Product {
   rating?: number;
   reviewCount?: number;
   soldCount?: number;
+  brand?: string;
+  category?: string;
+  stock?: number;
 }
 
 // ─── Data Fetching ────────────────────────────────────────────────────────────
