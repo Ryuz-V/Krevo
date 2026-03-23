@@ -9,7 +9,6 @@ import {
   AlertCircle,
   CheckCircle2,
   Loader2,
-  MoreHorizontal,
 } from "lucide-react";
 
 interface SellerItem {
@@ -50,10 +49,7 @@ export default function AdminSellersPage() {
     fetchSellers();
   }, []);
 
-  const handleToggleStatus = async (
-    storeId: string,
-    currentStatus: string
-  ) => {
+  const handleToggleStatus = async (storeId: string, currentStatus: string) => {
     const newStatus = currentStatus === "active" ? "suspended" : "active";
     setActionLoading(storeId);
     try {
@@ -88,9 +84,24 @@ export default function AdminSellersPage() {
 
   return (
     <div>
+      <style>{`
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* Table: tampil di desktop, sembunyikan di mobile */
+        .sellers-table { display: table; width: 100%; border-collapse: collapse; }
+        .sellers-cards { display: none; }
+
+        @media (max-width: 767px) {
+          .sellers-table { display: none; }
+          .sellers-cards { display: flex; flex-direction: column; gap: 10px; }
+          .filter-row { flex-direction: column !important; align-items: stretch !important; }
+          .filter-row .result-count { margin-left: 0 !important; }
+        }
+      `}</style>
+
       {/* Header */}
-      <div style={{ marginBottom: "28px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
+      <div style={{ marginBottom: "24px" }}>
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
           <Store size={20} color="#000" />
           <h1 style={{ fontSize: "22px", fontWeight: 700, margin: 0, color: "#0a0a0a" }}>
             Sellers
@@ -103,20 +114,19 @@ export default function AdminSellersPage() {
 
       {/* Filters */}
       <div
+        className="filter-row"
         style={{
           display: "flex",
-          gap: "12px",
-          marginBottom: "20px",
+          flexDirection: "row",
+          gap: "10px",
+          marginBottom: "16px",
           flexWrap: "wrap",
           alignItems: "center",
         }}
       >
         {/* Search */}
-        <div style={{ position: "relative", flex: "1", minWidth: "200px", maxWidth: "360px" }}>
-          <Search
-            size={14}
-            style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "#aaa" }}
-          />
+        <div style={{ position: "relative", flex: 1, minWidth: "200px" }}>
+          <Search size={14} style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "#aaa" }} />
           <input
             type="text"
             placeholder="Search seller or store..."
@@ -136,13 +146,13 @@ export default function AdminSellersPage() {
         </div>
 
         {/* Status Filter */}
-        <div style={{ display: "flex", gap: "6px" }}>
+        <div style={{ display: "flex", flexDirection: "row", gap: "6px" }}>
           {(["all", "active", "suspended"] as const).map((s) => (
             <button
               key={s}
               onClick={() => setFilterStatus(s)}
               style={{
-                padding: "8px 14px",
+                padding: "8px 12px",
                 borderRadius: "7px",
                 border: filterStatus === s ? "1px solid #000" : "1px solid #e0e0e0",
                 background: filterStatus === s ? "#0a0a0a" : "#fff",
@@ -158,241 +168,224 @@ export default function AdminSellersPage() {
           ))}
         </div>
 
-        <div
-          style={{
-            marginLeft: "auto",
-            fontSize: "12px",
-            color: "#aaa",
-            fontWeight: 500,
-          }}
-        >
+        <div className="result-count" style={{ marginLeft: "auto", fontSize: "12px", color: "#aaa", fontWeight: 500 }}>
           {filtered.length} seller{filtered.length !== 1 ? "s" : ""}
         </div>
       </div>
 
-      {/* Table */}
-      <div
-        style={{
-          background: "#fff",
-          border: "1px solid #e8e8e8",
-          borderRadius: "12px",
-          overflow: "hidden",
-        }}
-      >
-        {loading ? (
-          <div
-            style={{
-              padding: "60px",
-              textAlign: "center",
-              color: "#aaa",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
-            }}
-          >
-            <Loader2 size={16} style={{ animation: "spin 1s linear infinite" }} />
-            <span style={{ fontSize: "13px" }}>Loading sellers...</span>
-          </div>
-        ) : filtered.length === 0 ? (
-          <div style={{ padding: "60px", textAlign: "center", color: "#bbb", fontSize: "13px" }}>
-            No sellers found.
-          </div>
-        ) : (
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ borderBottom: "1px solid #f0f0f0" }}>
-                {["Seller", "Store", "City", "Status", "Actions"].map((h) => (
-                  <th
-                    key={h}
-                    style={{
-                      padding: "12px 20px",
-                      textAlign: "left",
-                      fontSize: "11px",
-                      fontWeight: 700,
-                      color: "#aaa",
-                      letterSpacing: "0.5px",
-                      textTransform: "uppercase",
-                    }}
+      {/* Loading */}
+      {loading ? (
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "60px", gap: "8px", color: "#aaa", background: "#fff", borderRadius: "12px", border: "1px solid #e8e8e8" }}>
+          <Loader2 size={16} style={{ animation: "spin 1s linear infinite" }} />
+          <span style={{ fontSize: "13px" }}>Loading sellers...</span>
+        </div>
+      ) : filtered.length === 0 ? (
+        <div style={{ padding: "60px", textAlign: "center", color: "#bbb", fontSize: "13px", background: "#fff", borderRadius: "12px", border: "1px solid #e8e8e8" }}>
+          No sellers found.
+        </div>
+      ) : (
+        <>
+          {/* ── DESKTOP: Table ── */}
+          <div style={{ background: "#fff", border: "1px solid #e8e8e8", borderRadius: "12px", overflow: "hidden" }}>
+            <table className="sellers-table">
+              <thead>
+                <tr style={{ borderBottom: "1px solid #f0f0f0" }}>
+                  {["Seller", "Store", "City", "Status", "Actions"].map((h) => (
+                    <th
+                      key={h}
+                      style={{
+                        padding: "12px 20px",
+                        textAlign: "left",
+                        fontSize: "11px",
+                        fontWeight: 700,
+                        color: "#aaa",
+                        letterSpacing: "0.5px",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((seller, i) => (
+                  <tr
+                    key={seller._id}
+                    style={{ borderBottom: i < filtered.length - 1 ? "1px solid #f5f5f5" : "none" }}
+                    onMouseEnter={(e) => ((e.currentTarget as HTMLTableRowElement).style.background = "#fafafa")}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLTableRowElement).style.background = "transparent")}
                   >
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((seller, i) => (
-                <tr
-                  key={seller._id}
-                  style={{
-                    borderBottom: i < filtered.length - 1 ? "1px solid #f5f5f5" : "none",
-                    transition: "background 0.1s",
-                  }}
-                  onMouseEnter={(e) =>
-                    ((e.currentTarget as HTMLTableRowElement).style.background = "#fafafa")
-                  }
-                  onMouseLeave={(e) =>
-                    ((e.currentTarget as HTMLTableRowElement).style.background = "transparent")
-                  }
-                >
-                  {/* Seller info */}
-                  <td style={{ padding: "14px 20px" }}>
-                    <div style={{ fontSize: "13px", fontWeight: 600, color: "#0a0a0a" }}>
-                      {seller.name}
-                    </div>
-                    <div style={{ fontSize: "11px", color: "#aaa", marginTop: "2px" }}>
-                      {seller.email}
-                    </div>
-                  </td>
+                    <td style={{ padding: "14px 20px" }}>
+                      <div style={{ fontSize: "13px", fontWeight: 600, color: "#0a0a0a" }}>{seller.name}</div>
+                      <div style={{ fontSize: "11px", color: "#aaa", marginTop: "2px" }}>{seller.email}</div>
+                    </td>
 
-                  {/* Store name */}
-                  <td style={{ padding: "14px 20px" }}>
-                    {seller.store ? (
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                        {seller.store.logo?.url ? (
-                          <img
-                            src={seller.store.logo.url}
-                            alt=""
+                    <td style={{ padding: "14px 20px" }}>
+                      {seller.store ? (
+                        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "8px" }}>
+                          {seller.store.logo?.url ? (
+                            <img src={seller.store.logo.url} alt="" style={{ width: "28px", height: "28px", borderRadius: "6px", objectFit: "cover", border: "1px solid #eee" }} />
+                          ) : (
+                            <div style={{ width: "28px", height: "28px", borderRadius: "6px", background: "#f0f0f0", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                              <Store size={12} color="#bbb" />
+                            </div>
+                          )}
+                          <span style={{ fontSize: "13px", color: "#333", fontWeight: 500 }}>{seller.store.name}</span>
+                        </div>
+                      ) : (
+                        <span style={{ fontSize: "12px", color: "#ccc" }}>No store</span>
+                      )}
+                    </td>
+
+                    <td style={{ padding: "14px 20px" }}>
+                      <span style={{ fontSize: "13px", color: "#666" }}>{seller.store?.city || "—"}</span>
+                    </td>
+
+                    <td style={{ padding: "14px 20px" }}>
+                      {seller.store ? (
+                        <span style={{
+                          display: "inline-flex", flexDirection: "row", alignItems: "center", gap: "5px",
+                          padding: "4px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: 600,
+                          background: seller.store.storeStatus === "active" ? "#f0fdf4" : "#fef2f2",
+                          color: seller.store.storeStatus === "active" ? "#16a34a" : "#dc2626",
+                          border: `1px solid ${seller.store.storeStatus === "active" ? "#bbf7d0" : "#fecaca"}`,
+                        }}>
+                          {seller.store.storeStatus === "active" ? <CheckCircle2 size={10} /> : <AlertCircle size={10} />}
+                          {seller.store.storeStatus}
+                        </span>
+                      ) : (
+                        <span style={{ fontSize: "12px", color: "#ccc" }}>—</span>
+                      )}
+                    </td>
+
+                    <td style={{ padding: "14px 20px" }}>
+                      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "8px" }}>
+                        {seller.store && (
+                          <button
+                            onClick={() => handleToggleStatus(seller.store!._id, seller.store!.storeStatus)}
+                            disabled={actionLoading === seller.store._id}
                             style={{
-                              width: "28px",
-                              height: "28px",
-                              borderRadius: "6px",
-                              objectFit: "cover",
-                              border: "1px solid #eee",
-                            }}
-                          />
-                        ) : (
-                          <div
-                            style={{
-                              width: "28px",
-                              height: "28px",
-                              borderRadius: "6px",
-                              background: "#f0f0f0",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
+                              padding: "6px 12px", borderRadius: "6px", border: "1px solid #e0e0e0",
+                              background: seller.store.storeStatus === "active" ? "#fff" : "#0a0a0a",
+                              color: seller.store.storeStatus === "active" ? "#dc2626" : "#fff",
+                              fontSize: "11px", fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap",
+                              display: "flex", flexDirection: "row", alignItems: "center", gap: "4px",
                             }}
                           >
-                            <Store size={12} color="#bbb" />
-                          </div>
+                            {actionLoading === seller.store._id && <Loader2 size={11} style={{ animation: "spin 1s linear infinite" }} />}
+                            {seller.store.storeStatus === "active" ? "Suspend" : "Activate"}
+                          </button>
                         )}
-                        <span style={{ fontSize: "13px", color: "#333", fontWeight: 500 }}>
-                          {seller.store.name}
-                        </span>
+                        <Link
+                          href={`/admin/sellers/${seller._id}`}
+                          style={{
+                            padding: "6px 10px", borderRadius: "6px", border: "1px solid #e0e0e0",
+                            background: "#fff", color: "#333", fontSize: "11px", fontWeight: 600,
+                            textDecoration: "none", display: "flex", flexDirection: "row", alignItems: "center", gap: "4px",
+                          }}
+                        >
+                          Detail <ChevronRight size={12} />
+                        </Link>
                       </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {/* ── MOBILE: Cards ── */}
+            <div className="sellers-cards" style={{ padding: "12px" }}>
+              {filtered.map((seller) => (
+                <div
+                  key={seller._id}
+                  style={{
+                    background: "#fff",
+                    border: "1px solid #e8e8e8",
+                    borderRadius: "10px",
+                    padding: "14px",
+                  }}
+                >
+                  {/* Top row: logo + info + status */}
+                  <div style={{ display: "flex", flexDirection: "row", alignItems: "flex-start", gap: "10px", marginBottom: "12px" }}>
+                    {seller.store?.logo?.url ? (
+                      <img src={seller.store.logo.url} alt="" style={{ width: "40px", height: "40px", borderRadius: "8px", objectFit: "cover", border: "1px solid #eee", flexShrink: 0 }} />
                     ) : (
-                      <span style={{ fontSize: "12px", color: "#ccc" }}>No store</span>
+                      <div style={{ width: "40px", height: "40px", borderRadius: "8px", background: "#f0f0f0", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                        <Store size={16} color="#bbb" />
+                      </div>
                     )}
-                  </td>
 
-                  {/* City */}
-                  <td style={{ padding: "14px 20px" }}>
-                    <span style={{ fontSize: "13px", color: "#666" }}>
-                      {seller.store?.city || "—"}
-                    </span>
-                  </td>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: "13px", fontWeight: 700, color: "#0a0a0a", marginBottom: "1px" }}>
+                        {seller.name}
+                      </div>
+                      <div style={{ fontSize: "11px", color: "#aaa", marginBottom: "4px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {seller.email}
+                      </div>
+                      {seller.store && (
+                        <div style={{ fontSize: "12px", color: "#555" }}>
+                          {seller.store.name}
+                          {seller.store.city ? ` · ${seller.store.city}` : ""}
+                        </div>
+                      )}
+                    </div>
 
-                  {/* Status badge */}
-                  <td style={{ padding: "14px 20px" }}>
+                    {/* Status badge */}
                     {seller.store ? (
-                      <span
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "5px",
-                          padding: "4px 10px",
-                          borderRadius: "20px",
-                          fontSize: "11px",
-                          fontWeight: 600,
-                          background:
-                            seller.store.storeStatus === "active" ? "#f0fdf4" : "#fef2f2",
-                          color:
-                            seller.store.storeStatus === "active" ? "#16a34a" : "#dc2626",
-                          border: `1px solid ${
-                            seller.store.storeStatus === "active" ? "#bbf7d0" : "#fecaca"
-                          }`,
-                        }}
-                      >
-                        {seller.store.storeStatus === "active" ? (
-                          <CheckCircle2 size={10} />
-                        ) : (
-                          <AlertCircle size={10} />
-                        )}
+                      <span style={{
+                        display: "inline-flex", flexDirection: "row", alignItems: "center", gap: "4px",
+                        padding: "3px 8px", borderRadius: "20px", fontSize: "10px", fontWeight: 600, flexShrink: 0,
+                        background: seller.store.storeStatus === "active" ? "#f0fdf4" : "#fef2f2",
+                        color: seller.store.storeStatus === "active" ? "#16a34a" : "#dc2626",
+                        border: `1px solid ${seller.store.storeStatus === "active" ? "#bbf7d0" : "#fecaca"}`,
+                      }}>
+                        {seller.store.storeStatus === "active" ? <CheckCircle2 size={9} /> : <AlertCircle size={9} />}
                         {seller.store.storeStatus}
                       </span>
                     ) : (
-                      <span style={{ fontSize: "12px", color: "#ccc" }}>—</span>
+                      <span style={{ fontSize: "11px", color: "#ccc" }}>No store</span>
                     )}
-                  </td>
+                  </div>
 
-                  {/* Actions */}
-                  <td style={{ padding: "14px 20px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      {seller.store && (
-                        <button
-                          onClick={() =>
-                            handleToggleStatus(
-                              seller.store!._id,
-                              seller.store!.storeStatus
-                            )
-                          }
-                          disabled={actionLoading === seller.store._id}
-                          style={{
-                            padding: "6px 12px",
-                            borderRadius: "6px",
-                            border: "1px solid #e0e0e0",
-                            background:
-                              seller.store.storeStatus === "active" ? "#fff" : "#0a0a0a",
-                            color:
-                              seller.store.storeStatus === "active" ? "#dc2626" : "#fff",
-                            fontSize: "11px",
-                            fontWeight: 600,
-                            cursor: "pointer",
-                            whiteSpace: "nowrap",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "4px",
-                          }}
-                        >
-                          {actionLoading === seller.store._id ? (
-                            <Loader2 size={11} style={{ animation: "spin 1s linear infinite" }} />
-                          ) : null}
-                          {seller.store.storeStatus === "active" ? "Suspend" : "Activate"}
-                        </button>
-                      )}
-
-                      <Link
-                        href={`/admin/sellers/${seller._id}`}
+                  {/* Bottom row: actions */}
+                  <div style={{ display: "flex", flexDirection: "row", gap: "8px" }}>
+                    {seller.store && (
+                      <button
+                        onClick={() => handleToggleStatus(seller.store!._id, seller.store!.storeStatus)}
+                        disabled={actionLoading === seller.store._id}
                         style={{
-                          padding: "6px 10px",
-                          borderRadius: "6px",
+                          flex: 1, padding: "8px", borderRadius: "7px",
                           border: "1px solid #e0e0e0",
-                          background: "#fff",
-                          color: "#333",
-                          fontSize: "11px",
-                          fontWeight: 600,
-                          cursor: "pointer",
-                          textDecoration: "none",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "4px",
+                          background: seller.store.storeStatus === "active" ? "#fff5f5" : "#0a0a0a",
+                          color: seller.store.storeStatus === "active" ? "#dc2626" : "#fff",
+                          fontSize: "12px", fontWeight: 600, cursor: "pointer",
+                          display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: "5px",
                         }}
                       >
-                        Detail
-                        <ChevronRight size={12} />
-                      </Link>
-                    </div>
-                  </td>
-                </tr>
+                        {actionLoading === seller.store._id && <Loader2 size={12} style={{ animation: "spin 1s linear infinite" }} />}
+                        {seller.store.storeStatus === "active" ? "Suspend" : "Activate"}
+                      </button>
+                    )}
+                    <Link
+                      href={`/admin/sellers/${seller._id}`}
+                      style={{
+                        flex: 1, padding: "8px", borderRadius: "7px",
+                        border: "1px solid #e0e0e0", background: "#fff",
+                        color: "#333", fontSize: "12px", fontWeight: 600,
+                        textDecoration: "none",
+                        display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: "5px",
+                      }}
+                    >
+                      Detail <ChevronRight size={13} />
+                    </Link>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
-        )}
-      </div>
-
-      <style>{`
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-      `}</style>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
