@@ -128,7 +128,6 @@ function Sidebar() {
           borderTop: "1px solid #222",
           background: "none",
           border: "none",
-          borderTop: "1px solid #222",
           color: "#555",
           fontSize: "13px",
           cursor: "pointer",
