@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search, User, ShoppingBag, Bell, MessageSquare, Store } from 'lucide-react';
+import { Search, User, ShoppingBag, Bell, MessageSquare, Store, Settings, LogOut } from 'lucide-react';
 
 type NavbarProps = {
     isLoggedIn?: boolean;
@@ -114,31 +114,40 @@ export default function Navbar({ isLoggedIn = false }: NavbarProps) {
                         </button>
                     </Link>
 
-                    {/* Register / Profile Button */}
+                    {/* Profile Button */}
                     {isLoggedIn ? (
                         <div className="relative group py-6 cursor-pointer">
-                            <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-900 group-hover:bg-gray-200 transition-colors border border-gray-200">
+                            <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white group-hover:bg-gray-800 transition-all duration-300 border border-black shadow-lg shadow-black/10 overflow-hidden ring-2 ring-transparent group-hover:ring-gray-100 ring-offset-2">
                                 <User className="w-5 h-5" />
                             </div>
                             {/* Profile Dropdown */}
-                            <div className="absolute right-0 top-[60px] w-48 bg-white shadow-xl rounded-xl border border-gray-100 hidden group-hover:block transition-all z-50 overflow-hidden">
-                                <div className="flex flex-col">
-                                    <Link href="/profile" className="px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors font-medium flex items-center gap-3">
-                                        <User className="w-4 h-4" /> Profile Saya
+                            <div className="absolute right-0 top-[70px] w-64 bg-white shadow-[0_20px_60px_rgba(0,0,0,0.1)] rounded-2xl border border-gray-100 hidden group-hover:block transition-all z-50 overflow-hidden opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                <div className="flex flex-col p-2">
+                                    <Link href="/profile" className="px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 rounded-xl transition-colors font-medium flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-white border border-gray-100 flex items-center justify-center text-gray-400">
+                                            <User size={14} />
+                                        </div>
+                                        Profile Saya
                                     </Link>
-                                    <Link href="/settings" className="px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors font-medium flex items-center gap-3">
-                                        <span className="w-4 h-4 flex justify-center items-center">⚙️</span> Pengaturan
+                                    <Link href="/settings" className="px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 rounded-xl transition-colors font-medium flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-white border border-gray-100 flex items-center justify-center text-gray-400 placeholder:text-gray-400">
+                                            <Settings size={14} />
+                                        </div>
+                                        Pengaturan
                                     </Link>
-                                    <div className="border-t border-gray-100 my-1"></div>
-                                    <button onClick={handleLogout} className="px-4 py-3 text-sm text-red-600 hover:bg-red-50 text-left transition-colors font-bold w-full">
-                                        Keluar
+                                    <div className="h-px bg-gray-100 my-2 mx-2"></div>
+                                    <button onClick={handleLogout} className="px-4 py-3 text-sm text-red-600 hover:bg-red-50 rounded-xl transition-colors font-bold flex items-center gap-3 w-full">
+                                        <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center text-red-600">
+                                            <LogOut size={14} />
+                                        </div>
+                                        Keluar Akun
                                     </button>
                                 </div>
                             </div>
                         </div>
                     ) : (
-                        <Link href="/register" className="bg-black text-white px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors flex items-center justify-center">
-                            Daftar
+                        <Link href="/register" className="bg-black text-white px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-gray-800 transition-all duration-300 shadow-xl shadow-black/10 hover:-translate-y-0.5 active:translate-y-0 active:shadow-lg">
+                            Daftar Sekarang
                         </Link>
                     )}
                 </div>

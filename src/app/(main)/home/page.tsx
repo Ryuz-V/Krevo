@@ -52,6 +52,7 @@ export default async function Page() {
   const products = await getExternalProducts();
   
   let userName = "";
+  let userEmail = "";
   if (token && token.value) {
     try {
       const payloadBase64 = token.value.split('.')[1];
@@ -59,7 +60,10 @@ export default async function Page() {
       if (payload.userId) {
         await connectDB();
         const user = await User.findById(payload.userId);
-        if (user) userName = user.name;
+        if (user) {
+          userName = user.name;
+          userEmail = user.email;
+        }
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -70,6 +74,7 @@ export default async function Page() {
     <div className="flex flex-col w-full bg-white">
       <HomeComponent 
         userName={userName || "Pelanggan Setia"} 
+        userEmail={userEmail}
         arrivals={products.arrivals}
         trending={products.trending}
         forYou={products.forYou}
