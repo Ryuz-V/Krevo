@@ -32,7 +32,7 @@ export default function LandingPage({
             
             <div className="flex flex-col pb-24">
                 {forYou.length > 0 && (
-                    <ProductCarousel title="UNTUK KAMU" products={forYou} hideArrows hideSeeAll />
+                    <ProductCarousel title="UNTUK KAMU" products={forYou} layout="grid" hideSeeAll />
                 )}
             </div>
         </div>

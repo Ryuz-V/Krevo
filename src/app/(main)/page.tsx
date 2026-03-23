@@ -18,7 +18,7 @@ async function getExternalProducts() {
     const mapProduct = (p: any): Product => ({
       id: `ext-${p.id}`,
       name: p.title,
-      colors: Math.floor(Math.random() * 3) + 1,
+      colors: (p.id % 3) + 1,
       price: Math.round(p.price * 15000),
       image: p.thumbnail,
       badge: p.discountPercentage > 15 ? 'SALE' : (p.id % 7 === 0 ? 'NEW' : undefined),

@@ -47,7 +47,7 @@ export default function Home({
                     <ProductCarousel title="TRENDING" products={trending} />
                 )}
                 {forYou.length > 0 && (
-                    <ProductCarousel title="UNTUK KAMU" products={forYou} hideArrows hideSeeAll />
+                    <ProductCarousel title="UNTUK KAMU" products={forYou} layout="grid" hideSeeAll />
                 )}
             </div>
         </div>
