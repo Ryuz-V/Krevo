@@ -30,10 +30,10 @@ export default async function ProfilePage() {
     }
 
     const menuItems = [
-        { icon: <Package size={20} />, label: "Pesanan Saya", desc: "Cek status pengiriman & histori belanja", href: "#" },
-        { icon: <Heart size={20} />, label: "Wishlist", desc: "Produk-produk favorit yang kamu simpan", href: "#" },
-        { icon: <Star size={20} />, label: "Ulasan Saya", desc: "Berikan masukan untuk produk yang dibeli", href: "#" },
-        { icon: <Settings size={20} />, label: "Pengaturan Akun", desc: "Update password & privasi", href: "#" },
+        { icon: <Package size={20} />, label: "Pesanan Saya", desc: "Cek status pengiriman & histori belanja", href: "/orders" },
+        { icon: <Heart size={20} />, label: "Wishlist", desc: "Produk-produk favorit yang kamu simpan", href: "/wishlist" },
+        { icon: <Star size={20} />, label: "Ulasan Saya", desc: "Berikan masukan untuk produk yang dibeli", href: "/reviews" },
+        { icon: <Settings size={20} />, label: "Pengaturan Akun", desc: "Update password & privasi", href: "/settings" },
     ];
 
     return (

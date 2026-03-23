@@ -146,9 +146,11 @@ export default function Navbar({ isLoggedIn = false }: NavbarProps) {
                             </div>
                         </div>
                     ) : (
-                        <Link href="/register" className="bg-black text-white px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-gray-800 transition-all duration-300 shadow-xl shadow-black/10 hover:-translate-y-0.5 active:translate-y-0 active:shadow-lg">
-                            Daftar Sekarang
-                        </Link>
+                        <div className="flex items-center gap-4">
+                            <Link href="/register" className="bg-black text-white px-6 py-2.5 rounded-lg text-[11px] font-bold uppercase tracking-widest hover:bg-gray-800 transition-all duration-300 shadow-xl shadow-black/10 hover:-translate-y-0.5 active:translate-y-0 active:shadow-lg">
+                                Daftar
+                            </Link>
+                        </div>
                     )}
                 </div>
             </div>
