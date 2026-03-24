@@ -117,64 +117,34 @@ function ImageGallery({
   );
 }
 
-// ─── ColorSelector ────────────────────────────────────────────────────────────
-
-const COLOR_OPTIONS = [
-  { label: "Putih",   value: "white",  className: "bg-white border border-gray-300" },
-  { label: "Hitam",   value: "black",  className: "bg-gray-900"                     },
-  { label: "Abu-abu", value: "gray",   className: "bg-gray-400"                     },
-  { label: "Cokelat", value: "brown",  className: "bg-amber-700"                    },
-] as const;
-
-function ColorSelector() {
-  const [selected, setSelected] = useState<string>("white");
-
-  return (
-    <div>
-      <p className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">
-        Pilih Warna
-      </p>
-      <div className="flex gap-3">
-        {COLOR_OPTIONS.map((color) => (
-          <button
-            key={color.value}
-            title={color.label}
-            onClick={() => setSelected(color.value)}
-            className={`
-              w-9 h-9 rounded-full transition-all duration-200
-              ${color.className}
-              ${
-                selected === color.value
-                  ? "ring-2 ring-gray-900 ring-offset-2 scale-110"
-                  : "hover:scale-105"
-              }
-            `}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 // ─── SizeSelector ─────────────────────────────────────────────────────────────
 
-const SIZE_OPTIONS = ["S", "M", "L", "XL", "XXL"] as const;
+const SHOE_SIZES = ["36", "37", "38", "39", "40", "41", "42"];
+const CLOTH_SIZES = ["S", "M", "L", "XL", "XXL"];
 
-function SizeSelector() {
-  const [selected, setSelected] = useState<string>("L");
+function isShoeCategory(category?: string): boolean {
+  if (!category) return false;
+  const c = category.toLowerCase();
+  return c.includes("shoe") || c.includes("sepatu") || c.includes("sandal") || c.includes("sneaker");
+}
+
+function SizeSelector({ category }: { category?: string }) {
+  const isShoe = isShoeCategory(category);
+  const options = isShoe ? SHOE_SIZES : CLOTH_SIZES;
+  const [selected, setSelected] = useState<string>(isShoe ? "38" : "M");
 
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
         <p className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-          Pilih Ukuran
+          {isShoe ? "Ukuran Sepatu" : "Pilih Ukuran"}
         </p>
         <button className="text-sm text-gray-500 underline underline-offset-2 hover:text-gray-800 transition-colors">
           Size Guide
         </button>
       </div>
       <div className="flex gap-2 flex-wrap">
-        {SIZE_OPTIONS.map((size) => (
+        {options.map((size) => (
           <button
             key={size}
             onClick={() => setSelected(size)}
@@ -312,11 +282,8 @@ export default function ProductDetail({ product }: { product: Product }) {
             </span>
           </div>
 
-          {/* Pilih warna */}
-          <ColorSelector />
-
           {/* Pilih ukuran */}
-          <SizeSelector />
+          <SizeSelector category={product.category} />
 
           {/* CTA buttons */}
           <div className="flex flex-col gap-3 pt-2">

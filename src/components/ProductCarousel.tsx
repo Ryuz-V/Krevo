@@ -125,7 +125,6 @@ function ProductItem({ product, index }: { product: Product; index: number }) {
                 </div>
                 <div className="text-center flex flex-col space-y-1.5 px-2">
                     <h3 className="text-xs font-bold uppercase tracking-tight">{product.name}</h3>
-                    <p className="text-[10px] text-gray-500 uppercase">{product.colors} warna</p>
                     <div className="flex items-center justify-center space-x-2">
                         {product.originalPrice && (
                             <span className="text-xs text-gray-400 line-through">

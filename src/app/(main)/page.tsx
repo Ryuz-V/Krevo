@@ -47,7 +47,7 @@ export default async function Page() {
 
   return (
     <div className="flex flex-col w-full bg-white">
-      <LandingPage 
+      <LandingPage
         arrivals={products.arrivals}
         trending={products.trending}
         forYou={products.forYou}
