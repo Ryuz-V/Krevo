@@ -1,90 +1,190 @@
 'use client';
 
 import ProductCarousel, { Product } from '../ProductCarousel';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { Star } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
 
-interface HomeProps {
-    userName?: string;
-    userEmail?: string;
-    arrivals: Product[];
-    trending: Product[];
-    forYou: Product[];
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+interface BannerSlide {
+  id: number;
+  imageUrl: string;
+  alt: string;
+  href: string;
 }
 
+interface HomeProps {
+  userName?: string;
+  userEmail?: string;
+  arrivals: Product[];
+  trending: Product[];
+  forYou: Product[];
+}
+
+// ─── Banner slides config ─────────────────────────────────────────────────────
+// Ukuran gambar yang disarankan: 1400 x 300 px (rasio ~4.6:1)
+// Format: JPG atau WebP untuk performa terbaik
+// Ganti imageUrl dengan path gambar kamu, contoh: "/banners/banner-1.jpg"
+
+const BANNER_SLIDES: BannerSlide[] = [
+  { id: 1, imageUrl: "/banners/banner-dummy-1.jpg", alt: "Banner 1", href: "#" },
+  { id: 2, imageUrl: "/banners/banner-dummy-2.jpg", alt: "Banner 2", href: "#" },
+  { id: 3, imageUrl: "/banners/banner-dummy-3.jpg", alt: "Banner 3", href: "#" },
+];
+
+const AUTOPLAY_INTERVAL = 4000; // milliseconds
+
+// ─── BannerSlideshow ──────────────────────────────────────────────────────────
+
+function BannerSlideshow() {
+  const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState<1 | -1>(1);
+  const total = BANNER_SLIDES.length;
+
+  const goTo = useCallback(
+    (index: number, dir: 1 | -1) => {
+      setDirection(dir);
+      setCurrent((index + total) % total);
+    },
+    [total]
+  );
+
+  const goPrev = () => goTo(current - 1, -1);
+  const goNext = useCallback(() => goTo(current + 1, 1), [current, goTo]);
+
+  // Autoplay
+  useEffect(() => {
+    const timer = setInterval(goNext, AUTOPLAY_INTERVAL);
+    return () => clearInterval(timer);
+  }, [goNext]);
+
+  const variants = {
+    enter: (dir: number) => ({ x: dir > 0 ? "100%" : "-100%", opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit:  (dir: number) => ({ x: dir > 0 ? "-100%" : "100%", opacity: 0 }),
+  };
+
+  return (
+    <div className="relative w-full h-[200px] sm:h-[260px] md:h-[300px] rounded-[2rem] overflow-hidden bg-gray-100 shadow-md group">
+
+      {/* Slides */}
+      <AnimatePresence initial={false} custom={direction}>
+        <motion.div
+          key={current}
+          custom={direction}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ duration: 0.45, ease: "easeInOut" }}
+          className="absolute inset-0"
+        >
+          <Link href={BANNER_SLIDES[current].href} className="block w-full h-full">
+            {BANNER_SLIDES[current].imageUrl ? (
+              <img
+                src={BANNER_SLIDES[current].imageUrl}
+                alt={BANNER_SLIDES[current].alt}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              // Placeholder — hapus bagian ini setelah gambar diisi
+              <div className="w-full h-full flex flex-col items-center justify-center bg-gray-200 gap-2">
+                <span className="text-sm font-semibold text-gray-400">
+                  Banner {BANNER_SLIDES[current].id}
+                </span>
+                <span className="text-xs text-gray-400">
+                  Ganti imageUrl di BANNER_SLIDES — ukuran: 1400 × 300 px
+                </span>
+              </div>
+            )}
+          </Link>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Arrow kiri */}
+      <button
+        onClick={(e) => { e.preventDefault(); goPrev(); }}
+        className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm shadow flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-white z-10"
+        aria-label="Banner sebelumnya"
+      >
+        <ChevronLeft size={18} className="text-gray-800" />
+      </button>
+
+      {/* Arrow kanan */}
+      <button
+        onClick={(e) => { e.preventDefault(); goNext(); }}
+        className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm shadow flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-white z-10"
+        aria-label="Banner berikutnya"
+      >
+        <ChevronRight size={18} className="text-gray-800" />
+      </button>
+
+      {/* Dots */}
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10">
+        {BANNER_SLIDES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i, i > current ? 1 : -1)}
+            aria-label={`Slide ${i + 1}`}
+            className={`
+              rounded-full transition-all duration-300
+              ${i === current ? "w-4 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/50 hover:bg-white/75"}
+            `}
+          />
+        ))}
+      </div>
+
+      {/* "Lihat Promo Lainnya" badge — pojok kanan bawah */}
+      <div className="absolute right-4 bottom-3 z-10">
+        <Link
+          href="#"
+          className="text-[10px] font-bold uppercase tracking-widest text-white bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10 hover:bg-black/70 transition-colors"
+        >
+          Lihat Promo Lainnya
+        </Link>
+      </div>
+
+    </div>
+  );
+}
+
+// ─── Home ─────────────────────────────────────────────────────────────────────
+
 export default function Home({
-    userName = "Pelanggan Setia",
-    userEmail = "",
-    arrivals,
-    trending,
-    forYou
+  userName = "Pelanggan Setia",
+  userEmail = "",
+  arrivals,
+  trending,
+  forYou,
 }: HomeProps) {
-    return (
-        <div className="flex flex-col w-full max-w-[1400px] mx-auto px-6 py-12">
-            {/* Banner Ad Section */}
-            <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="mb-12 relative h-[240px] md:h-[300px] w-full bg-gradient-to-r from-[#9d4edd] via-[#7b2cbf] to-[#5a189a] rounded-[2.5rem] overflow-hidden shadow-2xl shadow-purple-200 group flex items-center px-8 md:px-16"
-            >
-                {/* Decorative Elements */}
-                <div className="absolute top-0 right-0 w-full h-full overflow-hidden pointer-events-none">
-                    <motion.div 
-                        animate={{ 
-                            scale: [1, 1.1, 1],
-                            rotate: [0, 5, 0]
-                        }}
-                        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute -right-10 -top-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"
-                    />
-                    <div className="absolute right-20 bottom-10 opacity-20">
-                        <div className="relative">
-                            <div className="absolute -left-12 -top-12 w-32 h-32 bg-yellow-400/30 rounded-full blur-2xl animate-pulse"></div>
-                            <Star className="w-16 h-16 text-yellow-300 fill-yellow-300" />
-                            <Star className="w-8 h-8 text-yellow-200 fill-yellow-200 absolute -right-8 -top-4" />
-                            <Star className="w-6 h-6 text-yellow-100 fill-yellow-100 absolute -left-4 -bottom-6" />
-                        </div>
-                    </div>
-                </div>
+  return (
+    <div className="flex flex-col w-full max-w-[1400px] mx-auto px-6 py-12">
 
-                <div className="relative z-10 flex flex-col items-start gap-4 max-w-2xl">
-                    <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-[1.1]">
-                        Malas belanja ke mal?
-                    </h1>
-                    <p className="text-lg md:text-xl font-medium text-white/90 tracking-tight">
-                        Coba Official Store, jaminan pasti ori!
-                    </p>
-                    <button className="mt-4 px-8 py-3.5 border-2 border-white text-white rounded-xl font-bold uppercase tracking-widest hover:bg-white hover:text-[#7b2cbf] transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2 group/btn">
-                        Cek Sekarang
-                    </button>
-                </div>
+      {/* Banner Slideshow */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="mb-12"
+      >
+        <BannerSlideshow />
+      </motion.div>
 
-                {/* Bottom Pagination-like dots */}
-                <div className="absolute left-8 bottom-6 flex gap-1.5 pt-4">
-                    <div className="w-1.5 h-1.5 rounded-full bg-white opacity-40"></div>
-                    <div className="w-1.5 h-1.5 rounded-full bg-white opacity-40"></div>
-                    <div className="w-4 h-1.5 rounded-full bg-white"></div>
-                </div>
+      {/* Product carousels */}
+      <div className="flex flex-col space-y-16">
+        {arrivals.length > 0 && (
+          <ProductCarousel title="NEW ARRIVAL" products={arrivals} />
+        )}
+        {trending.length > 0 && (
+          <ProductCarousel title="TRENDING" products={trending} />
+        )}
+        {forYou.length > 0 && (
+          <ProductCarousel title="UNTUK KAMU" products={forYou} layout="grid" hideSeeAll />
+        )}
+      </div>
 
-                {/* Badge Bottom Right */}
-                <div className="absolute right-6 bottom-6 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-white">Lihat Promo Lainnya</span>
-                </div>
-            </motion.div>
-
-            <div className="flex flex-col space-y-16">
-                {arrivals.length > 0 && (
-                    <ProductCarousel title="NEW ARRIVAL" products={arrivals} />
-                )}
-                {trending.length > 0 && (
-                    <ProductCarousel title="TRENDING" products={trending} />
-                )}
-                {forYou.length > 0 && (
-                    <ProductCarousel title="UNTUK KAMU" products={forYou} layout="grid" hideSeeAll />
-                )}
-            </div>
-        </div>
-    );
+    </div>
+  );
 }
