@@ -1,8 +1,9 @@
 'use client';
 
+import { useState } from 'react'; //
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Search, User, ShoppingBag, Bell, MessageSquare, Store, Settings, LogOut } from 'lucide-react';
+import { useRouter } from 'next/navigation'; //
+import { Search, User, ShoppingBag, Bell, MessageSquare, Store, Settings, LogOut } from 'lucide-react'; //
 
 type NavbarProps = {
     isLoggedIn?: boolean;
@@ -10,29 +11,40 @@ type NavbarProps = {
 
 export default function Navbar({ isLoggedIn = false }: NavbarProps) {
     const router = useRouter();
+    const [searchQuery, setSearchQuery] = useState(""); // State untuk input pencarian
 
     const handleLogout = () => {
         document.cookie = "token=; Max-Age=0; path=/";
         router.push("/login");
     };
 
+    // Fungsi untuk memproses pencarian saat menekan Enter
+    const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && searchQuery.trim() !== '') {
+            router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+        }
+    };
+
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm font-sans">
-            <div className="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
-                {/* Left side: Logo & Navigation */}
+            <div className="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between"> {/* */}
                 <div className="flex flex-1 items-center gap-8 md:gap-12">
                     {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2">
                         <span className="text-2xl font-black tracking-tighter">KREVO</span>
                         <span className="text-[10px] font-medium tracking-widest text-gray-500 uppercase mt-1">.ID</span>
                     </Link>
-                    {/* Search Bar - Moved inside left container */}
+                    
+                    {/* Search Bar */}
                     <div className="hidden md:flex flex-1 items-center w-full mr-4 lg:mr-8">
                         <div className="flex w-full items-center bg-gray-100 rounded-lg px-4 py-2 border border-gray-200 focus-within:border-gray-400 transition-colors">
                             <Search className="w-5 h-5 text-gray-500 shrink-0" />
                             <input
                                 type="text"
                                 placeholder="Cari di KREVO"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDown={handleSearch}
                                 className="bg-transparent border-none outline-none text-sm ml-3 w-full placeholder:text-gray-400 text-gray-900"
                             />
                         </div>
