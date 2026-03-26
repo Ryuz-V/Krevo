@@ -128,8 +128,18 @@ function isShoeCategory(category?: string): boolean {
   return c.includes("shoe") || c.includes("sepatu") || c.includes("sandal") || c.includes("sneaker");
 }
 
+function isClothingCategory(category?: string): boolean {
+  if (!category) return true;
+  const c = category.toLowerCase();
+  return c.includes("pakaian") || c.includes("baju") || c.includes("kaos") || c.includes("kemeja") || c.includes("celana") || c.includes("clothing") || c.includes("fashion") || c.includes("koleksi") || c.includes("jaket") || c.includes("hoodie") || c.includes("sweater") || c.includes("shirt") || c.includes("dress") || c.includes("top") || c.includes("apparel");
+}
+
 function SizeSelector({ category }: { category?: string }) {
   const isShoe = isShoeCategory(category);
+  const isClothing = isClothingCategory(category);
+  
+  if (!isShoe && !isClothing) return null;
+
   const options = isShoe ? SHOE_SIZES : CLOTH_SIZES;
   const [selected, setSelected] = useState<string>(isShoe ? "38" : "M");
 
