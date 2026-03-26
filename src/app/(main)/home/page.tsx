@@ -37,7 +37,7 @@ async function getExternalProducts() {
     return {
       arrivals: arrivalsData.products.map(mapProduct),
       trending: mixedTrending.map(mapProduct),
-      forYou: forYouData.products.slice(0, 32).map(mapProduct)
+      forYou: forYouData.products.map(mapProduct)
     };
   } catch (error) {
     console.error("Error fetching external products:", error);

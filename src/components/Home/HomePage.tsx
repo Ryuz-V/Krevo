@@ -273,8 +273,22 @@ export default function Home({
   trending,
   forYou,
 }: HomeProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 16;
+  const totalPages = Math.ceil(forYou.length / itemsPerPage);
+  
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  const currentForYouProducts = forYou.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
   return (
-    <div className="flex flex-col w-full max-w-[1400px] mx-auto px-6 py-12">
+    <div className="flex flex-col w-full max-w-[1400px] mx-auto px-6 pt-12 pb-4">
 
       {/* Banner Slideshow */}
       <motion.div
@@ -304,7 +318,32 @@ export default function Home({
           <ProductCarousel title="TRENDING" products={trending} />
         )}
         {forYou.length > 0 && (
-          <ProductCarousel title="UNTUK KAMU" products={forYou} layout="grid" hideSeeAll />
+          <div className="flex flex-col">
+            <ProductCarousel title="UNTUK KAMU" products={currentForYouProducts} layout="grid" hideSeeAll />
+            
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center space-x-4 mt-20">
+                <button 
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <span className="text-sm font-semibold text-gray-700">
+                  Halaman {currentPage} dari {totalPages}
+                </span>
+                <button 
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </div>
+            )}
+          </div>
         )}
       </div>
 

@@ -9,9 +9,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.13.4",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.9.0",
     "framer-motion": "^12.34.3",
+    "google-auth-library": "^10.6.2",
     "jsonwebtoken": "^9.0.3",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.575.0",

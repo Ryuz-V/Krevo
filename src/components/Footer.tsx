@@ -76,11 +76,6 @@ Krevo adalah platform pasar yang mendukung produk-produk UMKM lokal Indonesia. T
                                 +62 817 3565 7890
                             </a>
                         </div>
-
-                        <div className="flex flex-col gap-1">
-                            <span className="text-sm font-semibold text-white">Jam Operasional</span>
-                            <span className="text-sm text-gray-400">Senin – Jumat : 09.00 – 17.00 WIB</span>
-                        </div>
                     </div>
 
                 </div>
