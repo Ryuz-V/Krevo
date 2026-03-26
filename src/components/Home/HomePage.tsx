@@ -4,7 +4,7 @@ import ProductCarousel, { Product } from '../ProductCarousel';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -150,7 +150,121 @@ function BannerSlideshow() {
   );
 }
 
-// ─── Home ─────────────────────────────────────────────────────────────────────
+// ─── Kategori ───────────────────────────────────────────────────────────────────
+
+interface Category {
+  id: number;
+  name: string;
+  imageUrl: string;
+}
+
+const CATEGORIES: Category[] = [
+  { id: 1, name: "Elektronik", imageUrl: "https://down-id.img.susercontent.com/file/dcd61dcb7c1448a132f49f938b0cb553@resize_w640_nl.webp" },
+  { id: 2, name: "Aksesoris HP & Laptop", imageUrl: "https://down-id.img.susercontent.com/file/id-50009109-0bd6a9ebd0f2ae9b7e8b9ce7d89897d6@resize_w640_nl.webp" },
+  { id: 3, name: "Buku & Alat Tulis", imageUrl: "https://down-id.img.susercontent.com/file/998c7682fd5e7a3563b2ad00aaa4e6f3@resize_w640_nl.webp" },
+  { id: 4, name: "Pakaian", imageUrl: "https://down-id.img.susercontent.com/file/04dba508f1ad19629518defb94999ef9@resize_w640_nl.webp" },
+  { id: 5, name: "Sepatu", imageUrl: "https://down-id.img.susercontent.com/file/3c8ff51aab1692a80c5883972a679168@resize_w640_nl.webp" },
+  { id: 6, name: "Tas Pria", imageUrl: "https://down-id.img.susercontent.com/file/47ed832eed0feb62fd28f08c9229440e@resize_w640_nl.webp" },
+  { id: 7, name: "Aksesoris Fashion", imageUrl: "https://down-id.img.susercontent.com/file/1f18bdfe73df39c66e7326b0a3e08e87@resize_w640_nl.webp" },
+  { id: 8, name: "Hobi & Koleksi", imageUrl: "https://down-id.img.susercontent.com/file/42394b78fac1169d67c6291973a3b132@resize_w640_nl.webp" },
+  { id: 9, name: "Perawatan & Kecantikan", imageUrl: "https://down-id.img.susercontent.com/file/2715b985ae706a4c39a486f83da93c4b@resize_w640_nl.webp" },
+  { id: 10, name: "Sourvenir & Perlengkapan", imageUrl: "https://down-id.img.susercontent.com/file/id-50009109-28b537029726a804da60f448c9083298@resize_w640_nl.webp" },
+  { id: 11, name: "Pakaian Wanita", imageUrl: "https://down-id.img.susercontent.com/file/6d63cca7351ba54a2e21c6be1721fa3a@resize_w640_nl.webp" },
+  { id: 12, name: "Pakaian Bayi & Anak", imageUrl: "https://down-id.img.susercontent.com/file/9251edd6d6dd98855ff5a99497835d9c@resize_w640_nl.webp" },
+  { id: 13, name: "Sepatu Wanita", imageUrl: "https://down-id.img.susercontent.com/file/id-50009109-a947822064b7a8077b15596c85bd9303@resize_w640_nl.webp" },
+  { id: 14, name: "Tas Wanita", imageUrl: "https://down-id.img.susercontent.com/file/id-50009109-da8cea4e4705abb4dd935b244668e9dd@resize_w640_nl.webp" },
+  { id: 15, name: "Gadget & Kamera", imageUrl: "https://down-id.img.susercontent.com/file/dcd61dcb7c1448a132f49f938b0cb553@resize_w640_nl.webp" },
+  { id: 16, name: "Produk Olahraga", imageUrl: "https://down-id.img.susercontent.com/file/id-50009109-28b537029726a804da60f448c9083298@resize_w640_nl.webp" },
+];
+
+function Categories() {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth - 1);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, []);
+
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      const { clientWidth } = scrollContainerRef.current;
+      scrollContainerRef.current.scrollBy({ left: -clientWidth, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      const { clientWidth } = scrollContainerRef.current;
+      scrollContainerRef.current.scrollBy({ left: clientWidth, behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <div className="w-full bg-white rounded-sm shadow border border-gray-100 mb-16 mt-4 relative">
+      <div className="px-5 py-3 border-b border-gray-100 bg-white z-10 relative">
+        <h2 className="text-[15px] font-extrabold text-gray-500 uppercase tracking-wider">KATEGORI</h2>
+      </div>
+      <div className="relative group bg-white">
+        <style dangerouslySetInnerHTML={{__html: `
+          .hide-scroll::-webkit-scrollbar {
+            display: none;
+          }
+          .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        `}} />
+        <div 
+          ref={scrollContainerRef} 
+          onScroll={checkScroll}
+          className="grid grid-rows-2 auto-cols-[33.333%] sm:auto-cols-[25%] md:auto-cols-[20%] lg:auto-cols-[14.2857%] grid-flow-col w-full overflow-x-auto hide-scroll scroll-smooth snap-x snap-mandatory"
+        >
+          {CATEGORIES.map((cat) => (
+            <Link 
+              key={cat.id} 
+              href={`/category/${cat.id}`} 
+              className="flex flex-col items-center justify-start py-4 px-2 border-r border-b border-gray-100 hover:shadow-[0_0_12px_rgba(0,0,0,0.1)] hover:border-transparent hover:z-10 relative bg-white transition-all snap-start h-[142px] [&:nth-child(even)]:border-b-0 [&:nth-last-child(1)]:border-r-0 [&:nth-last-child(2)]:border-r-0"
+            >
+              <div className="w-[72px] h-[72px] bg-gray-50 rounded-full flex items-center justify-center overflow-hidden mb-3 group-hover:bg-gray-100 transition-colors shrink-0">
+                <img src={cat.imageUrl} alt={cat.name} className="w-full h-full object-cover mix-blend-multiply" />
+              </div>
+              <span className="text-[13px] text-center text-gray-700 leading-tight">
+                {cat.name}
+              </span>
+            </Link>
+          ))}
+        </div>
+        
+        {/* Left Arrow */}
+        <button 
+          onClick={(e) => { e.preventDefault(); scrollLeft(); }} 
+          className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 bg-white shadow-md rounded-full flex items-center justify-center transition-all z-20 border border-gray-100 cursor-pointer ${canScrollLeft ? 'text-gray-800 hover:text-black opacity-100' : 'text-gray-300 opacity-0 group-hover:opacity-100 hidden sm:flex'}`}
+        >
+          <ChevronLeft size={22} className="ml-1" />
+        </button>
+        
+        {/* Right Arrow */}
+        <button 
+          onClick={(e) => { e.preventDefault(); scrollRight(); }} 
+          className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-10 h-10 bg-white shadow-md rounded-full flex items-center justify-center transition-all z-20 border border-gray-100 cursor-pointer ${canScrollRight ? 'text-gray-800 hover:text-black opacity-100' : 'text-gray-300 opacity-0 group-hover:opacity-100 hidden sm:flex'}`}
+        >
+          <ChevronRight size={22} className="mr-1" />
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function Home({
   userName = "Pelanggan Setia",
@@ -167,9 +281,18 @@ export default function Home({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="mb-12"
+        className="mb-8"
       >
         <BannerSlideshow />
+      </motion.div>
+
+      {/* Categories Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+      >
+        <Categories />
       </motion.div>
 
       {/* Product carousels */}

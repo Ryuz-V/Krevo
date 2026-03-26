@@ -59,7 +59,7 @@ export default function ProductCard({ product, slug }: { product: Product; slug:
           {/* Price + Cart */}
           <div className="flex items-center justify-between mt-2">
             <span className="text-base font-bold text-gray-900">
-              Rp {product.price.toLocaleString("id-ID")}
+              Rp {product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
             </span>
             <button
               onClick={(e) => e.preventDefault()}

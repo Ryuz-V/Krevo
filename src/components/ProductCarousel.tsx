@@ -128,11 +128,11 @@ function ProductItem({ product, index }: { product: Product; index: number }) {
                     <div className="flex items-center justify-center space-x-2">
                         {product.originalPrice && (
                             <span className="text-xs text-gray-400 line-through">
-                                Rp {product.originalPrice.toLocaleString('id-ID')}
+                                Rp {product.originalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                             </span>
                         )}
                         <p className={`text-xs font-bold ${product.badge === 'SALE' ? 'text-[#ff4e00]' : 'text-black'}`}>
-                            Rp {product.price.toLocaleString('id-ID')}
+                            Rp {product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                         </p>
                     </div>
                 </div>
