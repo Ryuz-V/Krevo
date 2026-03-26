@@ -174,7 +174,7 @@ const CATEGORIES: Category[] = [
   { id: 13, name: "Sepatu Wanita", imageUrl: "https://down-id.img.susercontent.com/file/id-50009109-a947822064b7a8077b15596c85bd9303@resize_w640_nl.webp" },
   { id: 14, name: "Tas Wanita", imageUrl: "https://down-id.img.susercontent.com/file/id-50009109-da8cea4e4705abb4dd935b244668e9dd@resize_w640_nl.webp" },
   { id: 15, name: "Gadget & Kamera", imageUrl: "https://down-id.img.susercontent.com/file/dcd61dcb7c1448a132f49f938b0cb553@resize_w640_nl.webp" },
-  { id: 16, name: "Produk Olahraga", imageUrl: "https://down-id.img.susercontent.com/file/id-50009109-28b537029726a804da60f448c9083298@resize_w640_nl.webp" },
+  { id: 16, name: "Makanan & Minuman", imageUrl: "https://down-id.img.susercontent.com/file/7873b8c3824367239efb02d18eeab4f5@resize_w640_nl.webp" },
 ];
 
 function Categories() {
@@ -251,7 +251,7 @@ function Categories() {
           onClick={(e) => { e.preventDefault(); scrollLeft(); }} 
           className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 bg-white shadow-md rounded-full flex items-center justify-center transition-all z-20 border border-gray-100 cursor-pointer ${canScrollLeft ? 'text-gray-800 hover:text-black opacity-100' : 'text-gray-300 opacity-0 group-hover:opacity-100 hidden sm:flex'}`}
         >
-          <ChevronLeft size={22} className="ml-1" />
+          <ChevronLeft size={22} className="pr-0.5" />
         </button>
         
         {/* Right Arrow */}
@@ -259,7 +259,7 @@ function Categories() {
           onClick={(e) => { e.preventDefault(); scrollRight(); }} 
           className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-10 h-10 bg-white shadow-md rounded-full flex items-center justify-center transition-all z-20 border border-gray-100 cursor-pointer ${canScrollRight ? 'text-gray-800 hover:text-black opacity-100' : 'text-gray-300 opacity-0 group-hover:opacity-100 hidden sm:flex'}`}
         >
-          <ChevronRight size={22} className="mr-1" />
+          <ChevronRight size={22} className="pl-0.5" />
         </button>
       </div>
     </div>
