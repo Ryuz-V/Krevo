@@ -98,7 +98,7 @@ export default async function ProductPage({ params }: PageProps) {
   return (
     <main className="min-h-screen bg-white">
       <div className="max-w-[1400px] mx-auto px-6 py-6 lg:py-10">
-        <ProductDetail product={product as any} />
+        <ProductDetail product={{ ...product, id } as any} />
       </div>
     </main>
   );

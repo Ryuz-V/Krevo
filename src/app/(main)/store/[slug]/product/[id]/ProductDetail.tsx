@@ -14,6 +14,8 @@ import {
   RotateCcw,
   MessageSquare,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useShop } from "@/contexts/ShopContext";
 import type { Product } from "./page";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -242,9 +244,34 @@ function TrustBadges() {
 
 // ─── ProductDetail (root export) ─────────────────────────────────────────────
 
-export default function ProductDetail({ product }: { product: Product }) {
-  const [isWishlisted, setIsWishlisted] = useState(false);
+export default function ProductDetail({ product }: { product: any }) {
   const [isCopied, setIsCopied] = useState(false);
+  const router = useRouter();
+  const { addToCart, toggleWishlist, isWishlisted: checkWishlist, setCheckoutItem } = useShop();
+
+  const isWishlisted = checkWishlist(product.id);
+
+  const handleBuyNow = () => {
+    setCheckoutItem({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.mainImage.url,
+        category: product.category
+    });
+    router.push('/checkout');
+  };
+
+  const handleAddToCart = () => {
+    addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.mainImage.url,
+        category: product.category
+    });
+    // Pilihan: tambah notifikasi toast jika ada
+  };
 
   async function handleShare() {
     await navigator.clipboard.writeText(window.location.href);
@@ -298,12 +325,20 @@ export default function ProductDetail({ product }: { product: Product }) {
           {/* CTA buttons */}
           <div className="flex flex-col gap-3 pt-2">
             <div className="flex gap-3">
-              <button className="flex-1 flex items-center justify-center gap-2 border-2 border-gray-900 text-gray-900 font-semibold py-3.5 px-6 rounded-xl hover:bg-gray-50 transition-colors duration-200">
+              <button 
+                onClick={handleAddToCart}
+                className="flex-1 flex items-center justify-center gap-2 border-2 border-gray-900 text-gray-900 font-semibold py-3.5 px-6 rounded-xl hover:bg-gray-50 transition-colors duration-200">
                 <ShoppingCart size={18} />
                 Keranjang
               </button>
               <button
-                onClick={() => setIsWishlisted((prev) => !prev)}
+                onClick={() => toggleWishlist({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.mainImage.url,
+                    category: product.category
+                })}
                 aria-label={isWishlisted ? "Hapus dari wishlist" : "Tambah ke wishlist"}
                 className={`
                   w-14 flex items-center justify-center rounded-xl border-2 transition-all duration-200
@@ -318,7 +353,9 @@ export default function ProductDetail({ product }: { product: Product }) {
               </button>
             </div>
 
-            <button className="w-full bg-gray-900 text-white font-bold py-4 px-6 rounded-xl hover:bg-gray-700 transition-colors duration-200 uppercase tracking-widest text-sm">
+            <button 
+              onClick={handleBuyNow}
+              className="w-full bg-gray-900 text-white font-bold py-4 px-6 rounded-xl hover:bg-gray-700 transition-colors duration-200 uppercase tracking-widest text-sm">
               Beli Langsung
             </button>
           </div>
