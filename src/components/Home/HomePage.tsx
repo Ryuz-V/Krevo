@@ -29,9 +29,9 @@ interface HomeProps {
 // Ganti imageUrl dengan path gambar kamu, contoh: "/banners/banner-1.jpg"
 
 const BANNER_SLIDES: BannerSlide[] = [
-  { id: 1, imageUrl: "/banners/banner-dummy-1.jpg", alt: "Banner 1", href: "#" },
-  { id: 2, imageUrl: "/banners/banner-dummy-2.jpg", alt: "Banner 2", href: "#" },
-  { id: 3, imageUrl: "/banners/banner-dummy-3.jpg", alt: "Banner 3", href: "#" },
+  { id: 1, imageUrl: "/banners/banner-1.jpg", alt: "Banner 1", href: "#" },
+  { id: 2, imageUrl: "/banners/banner-2.jpg", alt: "Banner 2", href: "#" },
+  { id: 3, imageUrl: "/banners/banner-3.jpg", alt: "Banner 3", href: "#" },
 ];
 
 const AUTOPLAY_INTERVAL = 4000; // milliseconds
