@@ -65,7 +65,7 @@ export default function BecomeSeller() {
       if (data.token) {
         document.cookie = `token=${data.token}; path=/`;
       }
-      router.push("/seller");
+      window.location.href = "/seller";
     }
   };
 

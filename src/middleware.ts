@@ -28,6 +28,15 @@ export function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/", req.url));
     }
 
+    // Arahkan seller yang mencoba membuka buat-toko kembali ke dashboard seller mereka
+    if (pathname.startsWith("/become-seller") && role === "seller") {
+      return NextResponse.redirect(new URL("/seller", req.url));
+    }
+
+    if (pathname.startsWith("/seller") && role !== "seller") {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+
     return NextResponse.next();
 
   } catch (error) {
@@ -36,5 +45,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/seller/:path*", "/home", "/home/:path*"],
+  matcher: ["/admin/:path*", "/seller/:path*", "/home", "/home/:path*", "/become-seller"],
 };

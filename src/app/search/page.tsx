@@ -6,14 +6,6 @@ import { Search, Loader2 } from 'lucide-react';
 import Navbar from '@/components/Navbar'; // Sesuaikan path-nya
 import ProductCarousel, { Product } from '@/components/ProductCarousel'; //
 
-// DATA DUMMY UNTUK TESTING
-const ALL_PRODUCTS: Product[] = [
-    { id: '1', name: 'Kaos', price: 150000, image: '/products/kaos.png' },
-    { id: '2', name: 'Laptop Gaming Gahar', price: 15000000, image: '/products/laptop.png' },
-    { id: '3', name: 'Sepatu Lari Pro', price: 850000, image: '/products/sepatu.png' },
-    { id: '4', name: 'Tas Ransel Kanvas', price: 320000, image: '/products/tas.png' },
-];
-
 export default function SearchPage() {
     const searchParams = useSearchParams();
     const query = searchParams.get('q') || '';
@@ -23,20 +15,59 @@ export default function SearchPage() {
 
     useEffect(() => {
         const performSearch = async () => {
+            if (!query.trim()) {
+                setResults([]);
+                setLoading(false);
+                return;
+            }
+
             setLoading(true);
-            // Simulasi loading 1 detik
-            await new Promise(resolve => setTimeout(resolve, 1000));
 
-            // Filter data berdasarkan nama produk (case insensitive)
-            const filtered = ALL_PRODUCTS.filter(p => 
-                p.name.toLowerCase().includes(query.toLowerCase())
-            );
+            try {
+                // Jalankan pengambilan data secara paralel
+                const [dbRes, dummyRes] = await Promise.all([
+                    fetch(`/api/products/search?q=${encodeURIComponent(query)}`),
+                    fetch(`https://dummyjson.com/products/search?q=${encodeURIComponent(query)}`)
+                ]);
 
-            setResults(filtered);
-            setLoading(false);
+                const [dbData, dummyData] = await Promise.all([
+                    dbRes.ok ? dbRes.json() : { products: [] },
+                    dummyRes.ok ? dummyRes.json() : { products: [] }
+                ]);
+
+                // Map produk database agar sesuai dengan tipe Product
+                const mappedDbProducts: Product[] = (dbData.products || []).map((p: any) => ({
+                    id: p._id,
+                    name: p.name,
+                    colors: 1,
+                    price: p.price,
+                    image: p.mainImage?.url || '/placeholder.png'
+                }));
+
+                // Map produk dummyjson agar sesuai dengan tipe Product
+                const mappedDummyProducts: Product[] = (dummyData.products || []).map((p: any) => ({
+                    id: `ext-${p.id}`,
+                    name: p.title,
+                    colors: (p.id % 3) + 1,
+                    price: Math.round(p.price * 15000),
+                    image: p.thumbnail,
+                    badge: p.discountPercentage > 15 ? 'SALE' : undefined,
+                    originalPrice: p.discountPercentage > 15 ? Math.round((p.price / (1 - p.discountPercentage / 100)) * 15000) : undefined
+                }));
+
+                // Gabungkan hasil dari kedua sumber
+                const combinedResults = [...mappedDbProducts, ...mappedDummyProducts];
+                setResults(combinedResults);
+
+            } catch (err) {
+                console.error("Gagal melakukan pencarian:", err);
+                setResults([]); // Fallback jika gagal total
+            } finally {
+                setLoading(false);
+            }
         };
 
-        if (query) performSearch();
+        performSearch();
     }, [query]);
 
     return (

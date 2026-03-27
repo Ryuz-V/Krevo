@@ -1,5 +1,7 @@
 import LandingPage from '@/components/Home/LandingPage';
 import { Product } from '@/components/ProductCarousel';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 async function getExternalProducts() {
   try {
@@ -43,6 +45,13 @@ async function getExternalProducts() {
 }
 
 export default async function Page() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('token')?.value;
+
+  if (token) {
+    redirect('/home');
+  }
+
   const products = await getExternalProducts();
 
   return (
