@@ -162,7 +162,7 @@ const CATEGORIES: Category[] = [
   { id: 1, name: "Elektronik", imageUrl: "https://down-id.img.susercontent.com/file/dcd61dcb7c1448a132f49f938b0cb553@resize_w640_nl.webp" },
   { id: 2, name: "Aksesoris HP & Laptop", imageUrl: "https://down-id.img.susercontent.com/file/id-50009109-0bd6a9ebd0f2ae9b7e8b9ce7d89897d6@resize_w640_nl.webp" },
   { id: 3, name: "Buku & Alat Tulis", imageUrl: "https://down-id.img.susercontent.com/file/998c7682fd5e7a3563b2ad00aaa4e6f3@resize_w640_nl.webp" },
-  { id: 4, name: "Pakaian", imageUrl: "https://down-id.img.susercontent.com/file/04dba508f1ad19629518defb94999ef9@resize_w640_nl.webp" },
+  { id: 4, name: "Pakaian Pria", imageUrl: "https://down-id.img.susercontent.com/file/04dba508f1ad19629518defb94999ef9@resize_w640_nl.webp" },
   { id: 5, name: "Sepatu", imageUrl: "https://down-id.img.susercontent.com/file/3c8ff51aab1692a80c5883972a679168@resize_w640_nl.webp" },
   { id: 6, name: "Tas Pria", imageUrl: "https://down-id.img.susercontent.com/file/47ed832eed0feb62fd28f08c9229440e@resize_w640_nl.webp" },
   { id: 7, name: "Aksesoris Fashion", imageUrl: "https://down-id.img.susercontent.com/file/1f18bdfe73df39c66e7326b0a3e08e87@resize_w640_nl.webp" },
@@ -233,7 +233,7 @@ function Categories() {
           {CATEGORIES.map((cat) => (
             <Link 
               key={cat.id} 
-              href={`/category/${cat.id}`} 
+              href={`/category/${cat.name.toLowerCase().replace(/\s+/g, '-')}`} 
               className="flex flex-col items-center justify-start py-4 px-2 border-r border-b border-gray-100 hover:shadow-[0_0_12px_rgba(0,0,0,0.1)] hover:border-transparent hover:z-10 relative bg-white transition-all snap-start h-[142px] [&:nth-child(even)]:border-b-0 [&:nth-last-child(1)]:border-r-0 [&:nth-last-child(2)]:border-r-0"
             >
               <div className="w-[72px] h-[72px] bg-gray-50 rounded-full flex items-center justify-center overflow-hidden mb-3 group-hover:bg-gray-100 transition-colors shrink-0">
