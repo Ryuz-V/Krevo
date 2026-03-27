@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export async function POST(req: Request) {
   try {
@@ -29,8 +30,17 @@ export async function POST(req: Request) {
       role: "user"
     });
 
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        role: user.role
+      },
+      process.env.JWT_SECRET!,
+      { expiresIn: "7d" }
+    );
+
     return NextResponse.json(
-      { message: "User registered", user },
+      { message: "User registered", user, token },
       { status: 201 }
     );
 

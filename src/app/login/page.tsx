@@ -53,9 +53,11 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
+    setError("");
 
     const res = await fetch("/api/auth/login", {
       method: "POST",
@@ -67,7 +69,7 @@ export default function LoginPage() {
 
     const data = await res.json();
 
-    if (data.token) {
+    if (res.ok && data.token) {
       document.cookie = `token=${data.token}; path=/`;
 
       // Get redirect path from query string if available
@@ -76,6 +78,8 @@ export default function LoginPage() {
 
       router.push(redirectPath);
       router.refresh(); // Ensure the layout/server components re-fetch the token
+    } else {
+      setError(data.message || "Email atau password salah!");
     }
   }
 
@@ -114,6 +118,12 @@ export default function LoginPage() {
               Masuk ke akun Anda untuk melanjutkan
             </p>
           </div>
+
+          {error && (
+            <div className="mt-4 p-3 bg-red-50 border border-red-200 text-red-600 text-sm font-medium rounded-lg text-center transition-all animate-in fade-in zoom-in-95 duration-200">
+              {error}
+            </div>
+          )}
 
           <form onSubmit={handleLogin} className="mt-8 space-y-6">
             <div className="space-y-4">

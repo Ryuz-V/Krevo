@@ -66,7 +66,12 @@ export default function RegisterPage() {
 
     const data = await res.json();
     console.log(data);
-    router.push("/login");
+    
+    if (data.token) {
+      document.cookie = `token=${data.token}; path=/`;
+    }
+
+    router.push("/home"); // Diarahkan langsung ke halaman utama dan sesi sudah tersimpan
   };
 
   const handleGoogleSuccess = async (credentialResponse: any) => {
